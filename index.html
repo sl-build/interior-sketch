@@ -1,0 +1,700 @@
+<!doctype html>
+<html lang="ru">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex, nofollow">
+<title>Светлый интерьер — эскиз обстановки</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<style>
+/* Layout: 3D-макет на всю ширину сверху, под ним зоны и список покупок в две колонки; на телефоне всё в одну */
+:root {
+  --bg: #f4f0e9;
+  --surface: #fffdf9;
+  --ink: #38332b;
+  --muted: #73695d;
+  --line: #ded6cb;
+  --accent: #8b7050;
+  --accent-ink: #ffffff;
+  --oak: #c9ac85;
+  --warn: #9a5b12;
+  --warn-bg: #fbf1e2;
+  --stage: #eee9df;
+  color-scheme: light;
+  --font-display: "Unbounded", "Golos Text", system-ui, sans-serif;
+  --font-body: "Golos Text", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, "SF Mono", Menlo, monospace;
+}
+* { box-sizing: border-box; }
+body {
+  background: var(--bg); color: var(--ink); font-family: var(--font-body); font-size: 15px; line-height: 1.55;
+  padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px));
+  padding-block: 24px 48px;
+}
+.wrap { max-width: 1280px; margin: 0 auto; display: grid; gap: 28px; }
+header { display: flex; flex-wrap: wrap; align-items: end; justify-content: space-between; gap: 12px 32px; }
+h1 { font-family: var(--font-display); font-weight: 700; font-size: clamp(24px, 3.4vw, 36px); line-height: 1.1; margin: 0; letter-spacing: -0.01em; text-wrap: balance; }
+.meta { color: var(--muted); font-size: 14px; margin: 6px 0 0; }
+.facts { display: flex; flex-wrap: wrap; gap: 8px; }
+.fact { font-family: var(--font-mono); font-size: 12.5px; border: 1px solid var(--line); background: var(--surface); padding: 4px 10px; border-radius: 999px; font-variant-numeric: tabular-nums; white-space: nowrap; }
+.palette { display: flex; flex-wrap: wrap; gap: 8px 18px; align-items: center; font-size: 13px; color: var(--muted); }
+.palette span { display: inline-flex; gap: 7px; align-items: center; }
+.palette i { width: 23px; height: 23px; border: 1px solid #c9bdad; border-radius: 50%; }
+
+.viewer { display: grid; gap: 10px; }
+.toolbar { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; }
+.toolbar .sep { width: 1px; height: 22px; background: var(--line); margin: 0 4px; }
+.btn {
+  font: 500 13.5px var(--font-body); color: var(--ink); background: var(--surface); border: 1px solid var(--line);
+  padding: 7px 12px; border-radius: 8px; cursor: pointer; transition: background .15s, border-color .15s;
+}
+.btn:hover { border-color: var(--accent); }
+.btn[aria-pressed="true"] { background: var(--accent); color: var(--accent-ink); border-color: var(--accent); }
+.btn:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.stage { position: relative; height: clamp(360px, 64vh, 720px); border-radius: 12px; overflow: hidden; background: var(--stage); border: 1px solid var(--line); }
+.stage canvas { display: block; width: 100%; height: 100%; touch-action: none; }
+.labels { position: absolute; inset: 0; pointer-events: none; overflow: hidden; }
+.rl { position: absolute; transform: translate(-50%, -50%); text-align: center; white-space: nowrap; font-size: 12px; line-height: 1.25;
+  background: color-mix(in srgb, var(--surface) 86%, transparent); border: 1px solid var(--line); border-radius: 6px; padding: 3px 7px; color: var(--ink); }
+.rl b { font-weight: 600; display: block; }
+.rl span { font-family: var(--font-mono); font-size: 11px; color: var(--muted); }
+.rl.q { border-style: dashed; color: var(--warn); }
+.tip { position: absolute; pointer-events: none; background: var(--ink); color: var(--bg); font-size: 12.5px; padding: 5px 9px; border-radius: 6px; white-space: nowrap; transform: translate(-50%, -130%); }
+.tip span { font-family: var(--font-mono); opacity: .8; margin-left: 6px; }
+.hint { position: absolute; left: 12px; bottom: 10px; font-size: 12px; color: var(--muted); background: color-mix(in srgb, var(--surface) 80%, transparent); padding: 3px 8px; border-radius: 6px; }
+.err { position: absolute; inset: 0; display: grid; place-items: center; padding: 24px; text-align: center; color: var(--muted); }
+
+.cols { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.15fr); gap: 28px; align-items: start; }
+@media (max-width: 880px) { .cols { grid-template-columns: minmax(0, 1fr); } }
+h2 { font-family: var(--font-display); font-weight: 500; font-size: 19px; margin: 0 0 14px; letter-spacing: 0; }
+.zones { display: grid; gap: 12px; }
+.zone { background: var(--surface); border: 1px solid var(--line); border-radius: 10px; padding: 14px 16px; }
+.zone h3 { margin: 0; font-size: 15.5px; font-weight: 600; display: flex; justify-content: space-between; gap: 12px; flex-wrap: wrap; }
+.zone h3 span { font-family: var(--font-mono); font-weight: 400; font-size: 12.5px; color: var(--muted); font-variant-numeric: tabular-nums; }
+.zone p, .zone ul { margin: 6px 0 0; color: var(--ink); }
+.zone ul { padding-left: 18px; }
+.zone li + li { margin-top: 3px; }
+.zone .go { margin-top: 10px; font-size: 12.5px; padding: 5px 10px; }
+
+.shop { background: var(--surface); border: 1px solid var(--line); border-radius: 10px; overflow: hidden; }
+.shop-head { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: baseline; gap: 6px 16px; padding: 14px 16px; border-bottom: 1px solid var(--line); }
+.total { font-family: var(--font-mono); font-size: 18px; font-variant-numeric: tabular-nums; }
+.total small { font-family: var(--font-body); font-size: 12.5px; color: var(--muted); display: block; text-align: right; }
+.tbl { overflow-x: auto; }
+table { width: 100%; border-collapse: collapse; font-size: 13.5px; }
+th, td { text-align: left; padding: 7px 10px; border-bottom: 1px solid var(--line); vertical-align: top; }
+th { font-size: 11.5px; text-transform: uppercase; letter-spacing: .06em; color: var(--muted); font-weight: 600; }
+tr.grp td { background: var(--bg); font-weight: 600; font-size: 12.5px; letter-spacing: .02em; }
+td.num { font-family: var(--font-mono); font-variant-numeric: tabular-nums; white-space: nowrap; text-align: right; }
+td.sz { font-family: var(--font-mono); font-size: 12px; color: var(--muted); white-space: nowrap; }
+.src { font-size: 11px; padding: 1px 7px; border-radius: 999px; border: 1px solid var(--line); white-space: nowrap; }
+.src.new { border-color: var(--accent); color: var(--accent); }
+tr.done td:not(.ck) { text-decoration: line-through; color: var(--muted); }
+td.ck { width: 28px; }
+input[type="checkbox"] { accent-color: var(--accent); width: 16px; height: 16px; }
+.note { font-size: 12.5px; color: var(--muted); padding: 10px 16px; }
+
+.rules { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 12px; }
+.rule { border-top: 2px solid var(--oak); padding-top: 10px; }
+.rule h3 { margin: 0 0 4px; font-size: 14.5px; }
+.rule p { margin: 0; color: var(--muted); font-size: 14px; }
+.caveat { background: var(--warn-bg); border: 1px solid color-mix(in srgb, var(--warn) 35%, transparent); border-radius: 10px; padding: 12px 16px; font-size: 14px; }
+.caveat b { color: var(--warn); }
+.caveat ul { margin: 6px 0 0; padding-left: 18px; }
+@media (prefers-reduced-motion: reduce) { .btn { transition: none; } }
+</style>
+
+<div class="wrap">
+  <header>
+    <div>
+      <h1>Светлый интерьер: эскиз обстановки</h1>
+      <p class="meta">Бело-древесно-бежевая палитра · готовая отделка · минимальные вложения</p>
+    </div>
+    <div class="facts">
+      <span class="fact">спальня ≈14,7 м²</span>
+      <span class="fact">гостиная ≈17,5 м²</span>
+      <span class="fact">кухня ≈10,3 м²</span>
+      <span class="fact">потолок 2,68 м</span>
+    </div>
+  </header>
+
+  <div class="palette" aria-label="Предлагаемые цвета мебели и текстиля">
+    <span><i style="background:#f7f4ed" aria-hidden="true"></i>Тёплый белый</span>
+    <span><i style="background:#d9c3a2" aria-hidden="true"></i>Светлое дерево</span>
+    <span><i style="background:#e8ddcf" aria-hidden="true"></i>Льняной бежевый</span>
+    <span><i style="background:#a88e75" aria-hidden="true"></i>Своя тёмно-бежевая кровать — оттенок условный</span>
+  </div>
+
+  <section class="viewer" aria-label="3D-макет">
+    <div class="toolbar" role="toolbar" aria-label="Виды">
+      <button class="btn" id="v-over" data-view="over" aria-pressed="true">Обзор</button>
+      <button class="btn" id="v-plan" data-view="plan" aria-pressed="false">План сверху</button>
+      <span class="sep" aria-hidden="true"></span>
+      <button class="btn" id="v-bed" data-view="bed" aria-pressed="false">Спальня</button>
+      <button class="btn" id="v-live" data-view="live" aria-pressed="false">Гостиная</button>
+      <button class="btn" id="v-work" data-view="work" aria-pressed="false">Рабочее место</button>
+      <button class="btn" id="v-kit" data-view="kit" aria-pressed="false">Кухня</button>
+      <button class="btn" id="v-hall" data-view="hall" aria-pressed="false">Прихожая</button>
+      <span class="sep" aria-hidden="true"></span>
+      <button class="btn" id="t-walls" aria-pressed="false">Стены в полный рост</button>
+    </div>
+    <div class="stage" id="stage">
+      <div class="labels" id="labels"></div>
+      <div class="tip" id="tip" hidden></div>
+      <div class="hint" id="hint">Крутите мышью или пальцем · наведите на мебель, чтобы увидеть размер</div>
+    </div>
+  </section>
+
+  <div class="caveat">
+    <b>Это предварительный эскиз.</b> Стены построены по схеме-аналогу; индивидуального обмера ещё нет. Контур, проёмы и размеры мебели нужно сверить перед покупками.
+    <ul>
+      <li>Окна, двери и санузлы стоят ориентировочно, сантехника нарисована условно. Ширина санузла Б неизвестна, его длина 2,27 м спорная.</li>
+      <li>Перед кухней на исходной схеме видна лоджия или балкон. Это нужно уточнить.</li>
+      <li>Крупные вещи (шкаф, кухня, диван) покупайте только после замера своей квартиры.</li>
+      <li>Тёмно-бежевая кровать уже есть; её размеры и точный оттенок пока неизвестны. Кровать 160×200, стол 140×65 и кресло здесь условные. Фактическую отделку сохраняем; её цвет нужно сверить на осмотре.</li>
+    </ul>
+  </div>
+
+  <div class="cols">
+    <section>
+      <h2>Что где и почему</h2>
+      <div class="zones">
+        <article class="zone">
+          <h3>Спальня · комната 1 <span>3,33 × 4,42 м</span></h3>
+          <p>Меньшую комнату предлагаем для сна и хранения. В основе — ваша тёмно-бежевая кровать, светлый шкаф и молочный текстиль. Рабочее место в гостиной.</p>
+          <ul>
+            <li>Существующая кровать изголовьем к боковой стене. В модели временно принят размер 160×200; проход около 0,8 м относится только к этой условной модели. Внести реальные внешние габариты.</li>
+            <li>Шкаф 2 м вдоль стены с дверью, он не мешает кровати. Напротив кровати комод с зеркалом.</li>
+            <li>Светло-бежевые плотные шторы и молочное постельное бельё. Прикроватные лампы добавить к существующему освещению.</li>
+          </ul>
+          <button class="btn go" data-view="bed">Показать спальню</button>
+        </article>
+        <article class="zone">
+          <h3>Гостиная и кабинет · комната 2 <span>3,32 × 5,27 м</span></h3>
+          <p>Самая большая комната делится на две зоны без стен и ремонта.</p>
+          <ul>
+            <li>Стол у окна вдоль стены: светлая столешница и белые ножки — вариант замены или обновления вашего чёрного стола. На нём свои ноутбук и монитор. Размер 140×65 условный, розетки и радиатор уточнить.</li>
+            <li>Рабочее кресло показано светло-бежевым; конкретное кресло ещё не выбрано. Для задвигания под стол нужны его габариты, высота подлокотников и свободное место между опорами стола.</li>
+            <li>Два стеллажа 2×4 ячейки (77×147 см) стоят поперёк комнаты за креслом. Это перегородка с хранением с обеих сторон, слева остаётся проход 1,8 м.</li>
+            <li>Светло-бежевый диван у длинной стены. Раскладной механизм выбирать, если нужны ночёвки гостей.</li>
+            <li>У окна кресло для чтения и торшер.</li>
+          </ul>
+          <button class="btn go" data-view="work">Показать рабочее место</button>
+        </article>
+        <article class="zone">
+          <h3>Кухня <span>3,13 × 3,28 м</span></h3>
+          <ul>
+            <li>Для кухни уже найден изготовитель на заказ. Визуально предлагаем тёплые белые фасады и светлую древесную столешницу. Гарнитур 2,6 м в модели условный; заменить его эскизом изготовителя после обмера и проверки подключений.</li>
+            <li>Стол 75×110 у окна и 2–3 стула. Над столом подвесная лампа и полка.</li>
+          </ul>
+          <button class="btn go" data-view="kit">Показать кухню</button>
+        </article>
+        <article class="zone">
+          <h3>Прихожая и санузлы</h3>
+          <ul>
+            <li>Шкаф-купе около 2,4 м вдоль глухой стены коридора, на одной двери зеркало. После шкафа проход около 1 м.</li>
+            <li>У входа обувница-банкетка и крючки.</li>
+            <li>Санузлы: сантехника от застройщика (отделка STD). Стиральная машина в санузле, где есть выводы под неё.</li>
+          </ul>
+          <button class="btn go" data-view="hall">Показать прихожую</button>
+        </article>
+      </div>
+    </section>
+
+    <section>
+      <h2>Что покупать</h2>
+      <div class="shop">
+        <div class="shop-head">
+          <div><b>Список с ориентирами цен</b><div class="meta" style="margin:2px 0 0">Отмечайте купленное, отметки сохраняются в этом браузере</div></div>
+          <div class="total" id="total">—<small>оценённые позиции; кухня отдельно</small></div>
+        </div>
+        <div class="tbl"><table>
+          <thead><tr><th></th><th>Вещь</th><th>Размер</th><th>Где</th><th style="text-align:right">₽</th></tr></thead>
+          <tbody id="shop"></tbody>
+        </table></div>
+        <p class="note">Цены — непроверенные ориентиры из первоначального эскиза, не предложения продавцов. Своя кровать не требует покупки; наличие подходящего матраса уточнить. Для кухни нужна отдельная смета изготовителя: в итог ниже её цена пока не входит. Доставку, сборку, недостающую технику и необходимость каждой покупки считать отдельно.</p>
+      </div>
+    </section>
+  </div>
+
+  <section>
+    <h2>Чтобы всё сочеталось</h2>
+    <div class="rules">
+      <div class="rule"><h3>Тёплый белый и светлое дерево</h3><p>Крупные шкафы и фасады светлые, древесина близких оттенков. Своя тёмно-бежевая кровать задаёт более насыщенный бежевый акцент; её сохраняем.</p></div>
+      <div class="rule"><h3>Светлый текстиль</h3><p>Молочный, льняной и светло-бежевый: шторы, бельё и обивка. Точный оттенок выбирать рядом с кроватью и фактической отделкой; декор докупить позже.</p></div>
+      <div class="rule"><h3>Свет без электрика</h3><p>Тёплые лампы 2700–3000 K: торшер, настольная лампа на рабочем месте, ночники, LED-лента под кухонными шкафами.</p></div>
+      <div class="rule"><h3>Сохраняем подходящие вещи</h3><p>Кровать уже есть. Стол можно оставить, заменить или обновить после проверки материала столешницы и полной стоимости. Тумбочки примерить к кровати до покупки новых.</p></div>
+    </div>
+  </section>
+</div>
+
+<script src="vendor/three.min.js"></script>
+<script src="vendor/OrbitControls.js"></script>
+<script>
+/* ---------- Список покупок ---------- */
+const SHOP = [
+  ["Спальня", [
+    ["bed", "Своя тёмно-бежевая кровать", "замерить", "есть", 0, 0],
+    ["matt", "Матрас, только если подходящего нет", "по своей кровати", "новое", 15000, 30000],
+    ["ns", "Прикроватные тумбы ×2", "≈40×40", "Авито", 1000, 3000],
+    ["ward", "Шкаф распашной (например, PAX)", "200×58×236", "Авито", 8000, 20000],
+    ["chest", "Комод + зеркало", "≈100×45", "Авито", 2500, 7000],
+    ["blk", "Шторы блэкаут + карниз", "окно ≈1,6 м", "новое", 3000, 6000]
+  ]],
+  ["Гостиная и кабинет", [
+    ["sofa", "Диван-кровать", "≈220×95", "Авито", 8000, 25000],
+    ["desk", "Светлый стол — при замене, по выбору", "замерить", "вариант", 2000, 5000],
+    ["chair", "Офисное кресло", "—", "Авито", 3000, 8000],
+    ["kallax", "Стеллажи 2×4 ячейки ×2 (Kallax и аналоги)", "77×39×147", "Авито", 4000, 8000],
+    ["tv", "Тумба под ТВ", "≈140×40", "Авито", 1500, 4000],
+    ["coffee", "Журнальный столик", "≈60×90", "Авито", 1000, 3000],
+    ["arm", "Кресло для чтения", "≈80×75", "Авито", 2000, 6000],
+    ["rug", "Ковёр", "160×230", "Авито", 2000, 5000],
+    ["lamps", "Торшер + настольная лампа", "—", "Авито", 2000, 5000]
+  ]],
+  ["Кухня", [
+    ["kit", "Кухня на заказ — отдельная смета", "по замеру", "цена неизвестна", 0, 0],
+    ["fridge", "Холодильник, если не входит в отделку", "60×65×200", "Авито", 8000, 20000],
+    ["table", "Стол + 2 стула", "75×110", "Авито", 3000, 8000]
+  ]],
+  ["Прихожая и санузлы", [
+    ["coupe", "Шкаф-купе", "≈240×55", "Авито", 5000, 15000],
+    ["shoe", "Обувница-банкетка, крючки", "≈80×35", "Авито", 1500, 4000],
+    ["wash", "Стиральная машина", "60×60", "Авито", 8000, 18000],
+    ["bath", "Полки, шторка, коврики", "—", "новое", 2000, 4000]
+  ]],
+  ["Свет и текстиль", [
+    ["light", "Тёплые лампы, ночники, LED-лента", "—", "новое", 3000, 6000],
+    ["tex", "Плед, подушки, растения", "—", "Авито", 2000, 5000]
+  ]]
+];
+const KEY = "interior-sketch-bought";
+let bought = {};
+try { bought = JSON.parse(localStorage.getItem(KEY) || "{}") || {}; } catch (e) { bought = {}; }
+const fmt = n => n.toLocaleString("ru-RU");
+function renderShop() {
+  const tb = document.getElementById("shop");
+  let html = "";
+  SHOP.forEach(([grp, rows]) => {
+    html += `<tr class="grp"><td colspan="5">${grp}</td></tr>`;
+    rows.forEach(([id, name, size, src, lo, hi]) => {
+      const d = !!bought[id];
+      html += `<tr class="${d ? "done" : ""}"><td class="ck">${src === "есть" ? '<span aria-label="Уже есть">✓</span>' : `<input type="checkbox" id="ck-${id}" data-id="${id}" ${d ? "checked" : ""} aria-label="Куплено: ${name}">`}</td>` +
+        `<td>${name}</td><td class="sz">${size}</td><td><span class="src ${src === "новое" ? "new" : ""}">${src}</span></td>` +
+        `<td class="num">${src === "есть" ? "—" : src === "цена неизвестна" ? "уточнить" : `${fmt(lo)}–${fmt(hi)}`}</td></tr>`;
+    });
+  });
+  tb.innerHTML = html;
+  let lo = 0, hi = 0;
+  SHOP.forEach(([, rows]) => rows.forEach(r => { if (!bought[r[0]]) { lo += r[4]; hi += r[5]; } }));
+  document.getElementById("total").innerHTML = `${fmt(lo)}–${fmt(hi)} ₽<small>оценённые позиции; кухня отдельно</small>`;
+}
+document.getElementById("shop").addEventListener("change", e => {
+  const id = e.target.dataset.id; if (!id) return;
+  if (e.target.checked) bought[id] = 1; else delete bought[id];
+  try { localStorage.setItem(KEY, JSON.stringify(bought)); } catch (err) {}
+  renderShop();
+});
+renderShop();
+
+/* ---------- 3D ---------- */
+(function () {
+  const stage = document.getElementById("stage");
+  if (!window.THREE || !THREE.OrbitControls) {
+    stage.insertAdjacentHTML("beforeend", '<div class="err">3D-движок не загрузился. Обновите страницу.</div>');
+    return;
+  }
+  const H = 2.68, CUT = 1.05;
+  const reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  const renderer = new THREE.WebGLRenderer({ antialias: true });
+  renderer.setPixelRatio(Math.min(devicePixelRatio, 2));
+  renderer.shadowMap.enabled = true;
+  renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+  renderer.outputEncoding = THREE.sRGBEncoding;
+  renderer.toneMapping = THREE.ACESFilmicToneMapping;
+  renderer.toneMappingExposure = 1.05;
+  stage.prepend(renderer.domElement);
+
+  const scene = new THREE.Scene();
+  const camera = new THREE.PerspectiveCamera(40, 1, 0.05, 120);
+  const controls = new THREE.OrbitControls(camera, renderer.domElement);
+  controls.enableDamping = true;
+  controls.maxPolarAngle = Math.PI / 2 - 0.02;
+  controls.minDistance = 0.3;
+  controls.maxDistance = 40;
+
+  function setStageBg() {
+    const c = getComputedStyle(document.documentElement).getPropertyValue("--stage").trim() || "#e3e8e4";
+    scene.background = new THREE.Color(c);
+  }
+  setStageBg();
+  matchMedia("(prefers-color-scheme: dark)").addEventListener("change", setStageBg);
+  new MutationObserver(setStageBg).observe(document.documentElement, { attributes: true, attributeFilter: ["data-theme"] });
+
+  /* Свет: солнце со стороны фасада (окна сверху плана, z < 0) */
+  scene.add(new THREE.HemisphereLight(0xffffff, 0xb9b3a6, 0.6));
+  const sun = new THREE.DirectionalLight(0xfff4e6, 0.95);
+  sun.position.set(3, 10, -7);
+  sun.target.position.set(5, 0, 3.5);
+  sun.castShadow = true;
+  sun.shadow.mapSize.set(2048, 2048);
+  Object.assign(sun.shadow.camera, { left: -9, right: 9, top: 9, bottom: -9, near: 1, far: 30 });
+  sun.shadow.bias = -0.0006;
+  sun.shadow.normalBias = 0.02;
+  scene.add(sun, sun.target);
+  scene.add(new THREE.AmbientLight(0xffffff, 0.18));
+
+  /* Материалы */
+  const mats = {};
+  const mat = (c, r = 0.8, m = 0) => mats[c + "_" + r + "_" + m] || (mats[c + "_" + r + "_" + m] = new THREE.MeshStandardMaterial({ color: c, roughness: r, metalness: m }));
+  const glass = new THREE.MeshStandardMaterial({ color: 0xbcd8e6, roughness: 0.05, metalness: 0.1, transparent: true, opacity: 0.28, depthWrite: false });
+  const mirror = new THREE.MeshStandardMaterial({ color: 0xc9dbe3, roughness: 0.08, metalness: 0.75 });
+  const C = { oak: 0xd9c3a2, oakD: 0xbfa383, white: 0xf7f4ed, graph: 0xb8ab98, sage: 0xe8ddcf, sageD: 0xc5b395, linen: 0xf0e8dd, sofa: 0xd5c6b2, mustard: 0xd8c5a7, blue: 0xd2c8bc, black: 0x252721, bed: 0xa88e75 };
+
+  const unit = new THREE.BoxGeometry(1, 1, 1);
+  let parentNow = scene;
+  function box(x0, x1, z0, z1, y0, y1, m, opt = {}) {
+    const me = new THREE.Mesh(unit, typeof m === "number" ? mat(m) : m);
+    me.scale.set(x1 - x0, y1 - y0, z1 - z0);
+    me.position.set((x0 + x1) / 2, (y0 + y1) / 2, (z0 + z1) / 2);
+    me.castShadow = opt.cast !== false; me.receiveShadow = true;
+    (opt.parent || parentNow).add(me);
+    return me;
+  }
+  function cyl(x, z, y0, y1, r, m, r2) {
+    const me = new THREE.Mesh(new THREE.CylinderGeometry(r2 == null ? r : r2, r, y1 - y0, 24), typeof m === "number" ? mat(m) : m);
+    me.position.set(x, (y0 + y1) / 2, z); me.castShadow = true; me.receiveShadow = true;
+    parentNow.add(me); return me;
+  }
+
+  /* Текстуры пола */
+  function rnd(seed) { let s = seed; return () => (s = (s * 16807) % 2147483647) / 2147483647; }
+  function plankTex() {
+    const c = document.createElement("canvas"); c.width = c.height = 1024; const g = c.getContext("2d"); const r = rnd(7);
+    const rows = 11, rh = 1024 / rows;
+    for (let i = 0; i < rows; i++) {
+      let x = -r() * 500;
+      while (x < 1024) {
+        const L = 380 + r() * 420, l = 66 + r() * 7, s = 34 + r() * 10;
+        g.fillStyle = `hsl(31 ${s}% ${l}%)`; g.fillRect(x, i * rh, L, rh);
+        g.strokeStyle = "rgba(90,60,30,.10)"; g.lineWidth = 1;
+        for (let k = 0; k < 6; k++) { g.beginPath(); const yy = i * rh + 4 + r() * (rh - 8); g.moveTo(x, yy); g.bezierCurveTo(x + L * .3, yy + r() * 6 - 3, x + L * .7, yy + r() * 6 - 3, x + L, yy); g.stroke(); }
+        g.fillStyle = "rgba(70,45,20,.35)"; g.fillRect(x, i * rh, 2, rh);
+        x += L;
+      }
+      g.fillStyle = "rgba(70,45,20,.3)"; g.fillRect(0, i * rh, 1024, 2);
+    }
+    const t = new THREE.CanvasTexture(c); t.wrapS = t.wrapT = THREE.RepeatWrapping; t.repeat.set(0.5, 0.5); t.encoding = THREE.sRGBEncoding; t.anisotropy = 8; return t;
+  }
+  function tileTex() {
+    const c = document.createElement("canvas"); c.width = c.height = 256; const g = c.getContext("2d");
+    g.fillStyle = "#d9dcd8"; g.fillRect(0, 0, 256, 256); g.fillStyle = "#b8bdb8";
+    g.fillRect(0, 0, 256, 3); g.fillRect(0, 127, 256, 3); g.fillRect(0, 0, 3, 256); g.fillRect(127, 0, 3, 256);
+    const t = new THREE.CanvasTexture(c); t.wrapS = t.wrapT = THREE.RepeatWrapping; t.repeat.set(1 / 0.6, 1 / 0.6); t.encoding = THREE.sRGBEncoding; return t;
+  }
+  const floorWood = new THREE.MeshStandardMaterial({ map: plankTex(), roughness: 0.7 });
+  const floorTile = new THREE.MeshStandardMaterial({ map: tileTex(), roughness: 0.5 });
+  function floor(pts, m) {
+    const s = new THREE.Shape(pts.map(p => new THREE.Vector2(p[0], -p[1])));
+    const g = new THREE.ShapeGeometry(s); g.rotateX(-Math.PI / 2);
+    const me = new THREE.Mesh(g, m); me.position.y = 0.002; me.receiveShadow = true; scene.add(me);
+  }
+  const rect = (x0, x1, z0, z1) => [[x0, z0], [x1, z0], [x1, z1], [x0, z1]];
+
+  /* Помещения, метры; x вправо, z вниз по плану; фасад с окнами при z = 0 */
+  const R = {
+    P1: [0, 3.33, 0, 4.42], P2: [3.53, 6.85, 0, 5.27], P3: [7.05, 10.18, 1.42, 4.70],
+    P6: [0, 2.05, 4.55, 6.82], P4: [8.52, 10.18, 4.80, 6.92]
+  };
+  floor(rect(...R.P1), floorWood); floor(rect(...R.P2), floorWood); floor(rect(...R.P3), floorWood);
+  floor([[2.15, 4.55], [3.33, 4.55], [3.33, 5.39], [7.05, 5.39], [7.05, 4.80], [8.42, 4.80], [8.42, 6.92], [2.15, 6.92]], floorWood);
+  floor(rect(...R.P6), floorTile); floor(rect(...R.P4), floorTile);
+  box(-0.3, 10.48, -0.3, 7.17, -0.18, 0, 0xcfccc4, { cast: false });
+  box(7.25, 9.95, -0.1, 1.12, -0.12, 0.0, 0xbfc4c0, { cast: false }); // лоджия?
+  box(7.25, 9.95, -0.1, -0.05, 0, 1.0, glass, { cast: false });
+
+  /* Стены с проёмами */
+  const clip = [];
+  const wallMat = new THREE.MeshStandardMaterial({ color: 0xf1efea, roughness: 0.95 });
+  function piece(x0, x1, z0, z1, y0, y1, m = wallMat, cast = true) {
+    const me = box(x0, x1, z0, z1, y0, y1, m, { cast }); me.userData.clip = { y0, y1 }; clip.push(me); return me;
+  }
+  function wall(x0, x1, z0, z1, ops = []) {
+    const alongX = (x1 - x0) >= (z1 - z0);
+    const seg = (a, b, y0, y1, m, cast) => alongX ? piece(a, b, z0, z1, y0, y1, m, cast) : piece(x0, x1, a, b, y0, y1, m, cast);
+    let cur = alongX ? x0 : z0; const end = alongX ? x1 : z1;
+    ops.slice().sort((p, q) => p.a - q.a).forEach(o => {
+      if (o.a > cur) seg(cur, o.a, 0, H);
+      if (o.t === "door") seg(o.a, o.b, 2.1, H);
+      else {
+        seg(o.a, o.b, 0, 0.85); seg(o.a, o.b, 2.35, H);
+        const mz = (z0 + z1) / 2;
+        piece(o.a, o.b, mz - 0.01, mz + 0.01, 0.85, 2.35, glass, false);
+        piece(o.a, o.a + 0.06, z0 + 0.05, z1 - 0.05, 0.85, 2.35, C.white); piece(o.b - 0.06, o.b, z0 + 0.05, z1 - 0.05, 0.85, 2.35, C.white);
+        piece((o.a + o.b) / 2 - 0.03, (o.a + o.b) / 2 + 0.03, mz - 0.03, mz + 0.03, 0.85, 2.35, C.white);
+        piece(o.a, o.b, mz - 0.03, mz + 0.03, 2.29, 2.35, C.white);
+        box(o.a - 0.05, o.b + 0.05, z1, z1 + 0.22, 0.83, 0.87, C.white);      // подоконник
+        box(o.a + 0.1, o.b - 0.1, z1 + 0.04, z1 + 0.12, 0.14, 0.66, 0xe8e8e6); // радиатор
+      }
+      cur = o.b;
+    });
+    if (cur < end) seg(cur, end, 0, H);
+  }
+  wall(-0.3, 7.05, -0.3, 0, [{ a: 0.85, b: 2.45 }, { a: 4.4, b: 6.0 }]);   // фасад: W1, W2
+  wall(-0.3, 0, 0, 7.17);                                                 // левая, к соседям
+  wall(3.33, 3.53, 0, 5.39);                                              // P1 | P2
+  wall(6.85, 7.05, 0, 5.39);                                              // P2 | кухня
+  wall(7.05, 10.48, 1.12, 1.42, [{ a: 7.45, b: 8.95 }]);                  // кухня, W3
+  wall(10.18, 10.48, 1.42, 7.17);                                         // правая
+  wall(7.05, 10.18, 4.70, 4.80, [{ a: 7.25, b: 8.05, t: "door" }]);       // кухня | проход, E3
+  wall(0, 3.33, 4.42, 4.55, [{ a: 2.4, b: 3.2, t: "door" }]);             // P1 | коридор, E1
+  wall(3.53, 6.85, 5.27, 5.39, [{ a: 5.85, b: 6.65, t: "door" }]);        // P2 | коридор, E2
+  wall(2.05, 2.15, 4.55, 6.92, [{ a: 5.6, b: 6.3, t: "door" }]);          // санузел Б, E6
+  wall(8.42, 8.52, 4.80, 6.92, [{ a: 5.55, b: 6.25, t: "door" }]);        // санузел А, E4
+  wall(0, 2.15, 6.82, 6.92);
+  wall(0, 10.18, 6.92, 7.17, [{ a: 5.75, b: 6.65, t: "door" }]);          // к общему коридору, E0
+  piece(5.75, 6.65, 7.1, 7.15, 0, 2.1, 0x4a4f4c);                          // входная дверь
+
+  function applyCut(h) {
+    clip.forEach(m => {
+      const { y0, y1 } = m.userData.clip;
+      if (y0 >= h) { m.visible = false; return; }
+      const top = Math.min(y1, h); m.visible = true; m.scale.y = top - y0; m.position.y = (y0 + top) / 2;
+    });
+  }
+
+  /* Мебель */
+  const pickables = [];
+  function item(name, size, fn) {
+    const g = new THREE.Group(); parentNow = g; fn(); parentNow = scene; scene.add(g);
+    g.traverse(o => { if (o.isMesh) { o.userData.item = { name, size }; pickables.push(o); } });
+  }
+  const lamp = (x, z, y) => { cyl(x, z, y, y + 0.28, 0.06, C.graph); const s = cyl(x, z, y + 0.26, y + 0.44, 0.13, new THREE.MeshStandardMaterial({ color: C.linen, emissive: 0xffd9a0, emissiveIntensity: 0.35 }), 0.09); s.castShadow = false; };
+  const plant = (x, z, h = 0.9) => { cyl(x, z, 0, 0.32, 0.16, 0xd6cfc4, 0.19); const f = new THREE.Mesh(new THREE.IcosahedronGeometry(h * 0.38, 1), mat(0x5f8a5f, 0.9)); f.position.set(x, 0.32 + h * 0.42, z); f.castShadow = true; parentNow.add(f); };
+  const legs = (x0, x1, z0, z1, h, c = C.graph, t = 0.04) => { [[x0, z0], [x1 - t, z0], [x0, z1 - t], [x1 - t, z1 - t]].forEach(([x, z]) => box(x, x + t, z, z + t, 0, h, c)); };
+
+  // Спальня
+  item("Своя тёмно-бежевая кровать", "160×200 условно; нужен замер", () => {
+    box(0, 0.06, 1.2, 2.9, 0, 1.05, C.bed);
+    box(0.06, 2.06, 1.25, 2.85, 0.08, 0.32, C.bed);
+    box(0.08, 2.04, 1.27, 2.83, 0.32, 0.55, C.white);
+    box(0.7, 2.07, 1.24, 2.86, 0.5, 0.6, C.sage);
+    box(0.12, 0.56, 1.33, 2.0, 0.55, 0.69, C.linen); box(0.12, 0.56, 2.1, 2.77, 0.55, 0.69, C.linen);
+    box(1.55, 1.9, 1.23, 2.87, 0.6, 0.62, C.linen);
+  });
+  item("Прикроватная тумба", "40×40 см", () => { box(0.02, 0.44, 0.74, 1.14, 0, 0.5, C.white); lamp(0.22, 0.94, 0.5); });
+  item("Прикроватная тумба", "40×40 см", () => { box(0.02, 0.44, 2.96, 3.36, 0, 0.5, C.white); lamp(0.22, 3.16, 0.5); });
+  item("Шкаф", "200×58×236 см", () => {
+    box(0.0, 2.0, 3.84, 4.42, 0, 2.36, C.white);
+    [0.5, 1.0, 1.5].forEach(x => box(x - 0.004, x + 0.004, 3.832, 3.84, 0.04, 2.32, 0xcfcac2));
+    [0.46, 0.54, 1.46, 1.54].forEach(x => box(x - 0.01, x + 0.01, 3.81, 3.84, 0.95, 1.2, C.graph));
+  });
+  item("Комод и зеркало", "100×45 см", () => {
+    box(2.88, 3.33, 1.3, 2.3, 0.06, 0.8, C.oak);
+    [0.3, 0.55].forEach(y => box(2.874, 2.88, 1.33, 2.27, y - 0.004, y + 0.004, C.oakD));
+    box(3.31, 3.33, 1.45, 2.15, 1.05, 1.85, mirror);
+  });
+  item("Ковёр", "150×230 см", () => box(1.2, 2.7, 0.9, 3.2, 0, 0.012, 0xd7cdbd, { cast: false }));
+  item("Шторы блэкаут", "окно ≈1,6 м", () => {
+    box(0.55, 0.98, 0.02, 0.1, 0.05, 2.55, C.graph); box(2.32, 2.75, 0.02, 0.1, 0.05, 2.55, C.graph);
+    box(0.5, 2.8, 0.05, 0.07, 2.56, 2.59, C.oakD);
+  });
+  item("Растение", "", () => plant(3.0, 0.45, 1.0));
+
+  // Гостиная и кабинет
+  item("Светлый стол — вариант замены или обновления", "140×65 см условно", () => {
+    box(6.2, 6.85, 0.35, 1.75, 0.72, 0.75, C.oak); legs(6.22, 6.83, 0.37, 1.73, 0.72, C.white);
+    box(6.62, 6.65, 0.75, 1.35, 0.98, 1.32, C.black); box(6.6, 6.67, 1.0, 1.1, 0.75, 0.98, C.graph);
+    box(6.25, 6.45, 0.85, 1.25, 0.75, 0.765, 0xdedede);
+    lamp(6.72, 1.6, 0.75);
+  });
+  item("Светлое рабочее кресло — пример", "габариты и задвигание уточнить", () => {
+    cyl(5.85, 1.05, 0.02, 0.06, 0.28, C.graph); cyl(5.85, 1.05, 0.06, 0.44, 0.03, C.graph);
+    box(5.62, 6.08, 0.83, 1.27, 0.44, 0.52, C.linen); box(5.56, 5.63, 0.85, 1.25, 0.55, 1.08, C.sofa);
+  });
+  item("Полка над столом", "130×25 см", () => {
+    box(6.6, 6.85, 0.4, 1.7, 1.45, 1.48, C.oak);
+    [[0.45, 0.2, C.sageD], [0.66, 0.22, C.mustard], [0.9, 0.18, C.blue], [1.1, 0.24, C.graph]].forEach(([z, h, c], i) => box(6.64, 6.82, 0.45 + i * 0.05 + z * 0.4, 0.49 + i * 0.05 + z * 0.4, 1.48, 1.48 + h, c));
+  });
+  function kallax(x0, z0) {
+    const W = 0.77, D = 0.39, Ht = 1.47, t = 0.035;
+    box(x0, x0 + t, z0, z0 + D, 0, Ht, C.white); box(x0 + W - t, x0 + W, z0, z0 + D, 0, Ht, C.white);
+    box(x0 + W / 2 - 0.008, x0 + W / 2 + 0.008, z0, z0 + D, 0, Ht, C.white);
+    for (let i = 0; i <= 4; i++) { const y = i * (Ht - t) / 4; box(x0, x0 + W, z0, z0 + D, y, y + t, C.white); }
+    const fills = [[0, 0, 0xc9b9a3], [1, 1, C.sageD], [0, 2, C.graph], [1, 3, 0xc9b9a3], [0, 3, C.mustard]];
+    fills.forEach(([cx, cy, c]) => { const xa = x0 + t + cx * (W / 2 - 0.01), ya = t + cy * (Ht - t) / 4; box(xa + 0.02, xa + W / 2 - 0.06, z0 + 0.04, z0 + D - 0.04, ya, ya + 0.27, c); });
+  }
+  item("Стеллажи 2×4 ×2 — перегородка", "2 × 77×39×147 см", () => { kallax(5.3, 2.15); kallax(6.08, 2.15); });
+  item("Диван-кровать", "220×95 см", () => {
+    box(3.53, 4.48, 2.75, 4.95, 0.1, 0.42, C.sofa); box(3.53, 3.76, 2.75, 4.95, 0.42, 0.86, C.sofa);
+    box(3.53, 4.48, 2.75, 2.95, 0.42, 0.64, C.sofa); box(3.53, 4.48, 4.75, 4.95, 0.42, 0.64, C.sofa);
+    box(3.76, 4.44, 2.97, 3.84, 0.42, 0.52, 0xe0d2bf); box(3.76, 4.44, 3.86, 4.73, 0.42, 0.52, 0xe0d2bf);
+    box(3.78, 3.9, 3.0, 3.42, 0.52, 0.88, C.mustard); box(3.78, 3.9, 4.3, 4.7, 0.52, 0.88, C.sage);
+    legs(3.55, 4.46, 2.77, 4.93, 0.1, C.black, 0.05);
+  });
+  item("Журнальный столик", "60×90 см", () => { box(4.85, 5.45, 3.4, 4.3, 0.38, 0.42, C.oak); legs(4.87, 5.43, 3.42, 4.28, 0.38); });
+  item("Ковёр", "160×230 см", () => box(4.3, 6.3, 2.85, 4.75, 0, 0.012, 0xcdc4b3, { cast: false }));
+  item("Тумба под ТВ и телевизор", "140×40 см · ТВ 55″", () => {
+    box(6.45, 6.85, 2.95, 4.35, 0.08, 0.5, C.white); legs(6.47, 6.83, 2.97, 4.33, 0.08, C.black);
+    box(6.8, 6.835, 3.04, 4.26, 0.98, 1.68, C.black);
+  });
+  item("Торшер", "", () => { cyl(3.72, 2.5, 0, 0.03, 0.15, C.graph); cyl(3.72, 2.5, 0.03, 1.5, 0.012, C.graph); const s = cyl(3.72, 2.5, 1.45, 1.72, 0.2, new THREE.MeshStandardMaterial({ color: C.linen, emissive: 0xffd9a0, emissiveIntensity: 0.4 }), 0.15); s.castShadow = false; });
+  item("Кресло для чтения", "80×75 см", () => {
+    box(3.68, 4.48, 0.4, 1.15, 0.12, 0.45, C.mustard); box(3.68, 4.48, 0.4, 0.58, 0.45, 0.95, C.mustard);
+    box(3.68, 3.8, 0.4, 1.15, 0.45, 0.62, C.mustard); box(4.36, 4.48, 0.4, 1.15, 0.45, 0.62, C.mustard);
+    legs(3.7, 4.46, 0.42, 1.13, 0.12, C.oakD);
+  });
+  item("Растение", "", () => plant(4.9, 0.45, 0.8));
+  item("Лёгкие шторы", "", () => { box(4.1, 4.5, 0.02, 0.08, 0.05, 2.55, C.linen); box(5.9, 6.3, 0.02, 0.08, 0.05, 2.55, C.linen); });
+
+  // Кухня
+  item("Кухонный гарнитур", "260×60 см", () => {
+    box(9.6, 10.18, 1.42, 4.0, 0, 0.1, C.graph);
+    box(9.58, 10.18, 1.42, 4.0, 0.1, 0.86, C.white);
+    [1.82, 2.42, 3.0, 3.6].forEach(z => box(9.574, 9.58, z - 0.004, z + 0.004, 0.12, 0.84, 0xcfcac2));
+    box(9.55, 10.18, 1.42, 4.0, 0.86, 0.9, C.oak);
+    box(9.7, 10.05, 1.85, 2.4, 0.86, 0.905, 0xb9bec0);
+    cyl(10.08, 2.12, 0.9, 1.15, 0.015, 0xa9aeb0);
+    box(9.68, 10.08, 2.95, 3.55, 0.9, 0.91, C.black);
+    box(9.83, 10.18, 1.42, 3.95, 1.45, 2.15, C.white);
+  });
+  item("Холодильник", "60×65×200 см", () => box(9.53, 10.18, 4.02, 4.68, 0, 2.0, 0xe7e9e9));
+  item("Стол и 2 стула", "75×110 см", () => {
+    box(7.07, 7.82, 1.75, 2.85, 0.72, 0.75, C.oak); legs(7.09, 7.8, 1.77, 2.83, 0.72);
+    [[1.88, 2.3], [2.32, 2.74]].forEach(([a, b]) => { box(7.92, 8.34, a, b, 0.44, 0.47, C.white); legs(7.93, 8.33, a + 0.01, b - 0.01, 0.44, C.black, 0.03); box(8.3, 8.34, a, b, 0.47, 0.88, C.white); });
+  });
+  item("Подвесная лампа", "", () => { cyl(7.45, 2.3, 1.55, H, 0.006, C.black); const s = cyl(7.45, 2.3, 1.38, 1.56, 0.2, new THREE.MeshStandardMaterial({ color: C.graph, emissive: 0xffd9a0, emissiveIntensity: 0.15 }), 0.05); s.castShadow = false; });
+  item("Полка", "80×25 см", () => { box(7.05, 7.3, 1.9, 2.7, 1.5, 1.53, C.oak); plant(7.17, 2.5, 0.35); });
+
+  // Прихожая
+  item("Шкаф-купе", "240×55 см", () => {
+    box(2.95, 5.35, 6.37, 6.92, 0, 2.3, 0xe2dccf);
+    box(4.17, 5.3, 6.364, 6.37, 0.08, 2.22, mirror);
+    box(4.146, 4.154, 6.362, 6.37, 0.04, 2.26, 0xb7b0a3);
+  });
+  item("Обувница-банкетка и крючки", "80×35 см", () => {
+    box(6.8, 7.6, 6.57, 6.92, 0, 0.44, C.oak); box(6.82, 7.58, 6.59, 6.92, 0.44, 0.5, C.sage);
+    box(6.8, 7.6, 6.89, 6.92, 1.62, 1.67, C.graph);
+    box(6.95, 7.2, 6.75, 6.89, 0.9, 1.62, C.blue); box(7.25, 7.48, 6.77, 6.89, 1.0, 1.62, C.graph);
+  });
+  item("Коврик", "", () => box(5.8, 6.6, 6.3, 6.88, 0, 0.012, C.graph, { cast: false }));
+
+  // Санузлы, условно
+  item("Ванна (условно)", "170×70 см", () => { box(0.02, 1.72, 4.57, 5.27, 0, 0.58, C.white); box(0.1, 1.64, 4.65, 5.19, 0.5, 0.585, 0xdfe7ea); });
+  item("Унитаз (условно)", "", () => { box(0.0, 0.2, 5.85, 6.25, 0.4, 0.8, C.white); cyl(0.45, 6.05, 0, 0.42, 0.19, C.white); });
+  item("Раковина с тумбой", "50 см", () => { box(0.78, 1.22, 6.42, 6.82, 0.2, 0.8, C.oak); box(0.75, 1.25, 6.4, 6.82, 0.8, 0.86, C.white); box(0.8, 1.2, 6.8, 6.82, 1.05, 1.65, mirror); });
+  item("Стиральная машина", "60×60 см", () => {
+    box(1.4, 2.0, 6.22, 6.82, 0, 0.85, 0xf0f0f0);
+    const r = new THREE.Mesh(new THREE.TorusGeometry(0.17, 0.025, 10, 32), mat(0x9aa0a2)); r.position.set(1.7, 0.45, 6.215); parentNow.add(r);
+  });
+  item("Душ (условно)", "90×90 см", () => { box(9.28, 10.18, 4.8, 5.7, 0, 0.06, C.white); box(9.28, 9.3, 4.8, 5.7, 0.06, 2.0, glass, { cast: false }); });
+  item("Унитаз (условно)", "", () => { box(9.98, 10.18, 6.0, 6.4, 0.4, 0.8, C.white); cyl(9.73, 6.2, 0, 0.42, 0.19, C.white); });
+  item("Раковина (условно)", "", () => box(8.65, 9.15, 6.5, 6.92, 0.8, 0.86, C.white));
+
+  /* Подписи комнат */
+  const labelsEl = document.getElementById("labels");
+  const labels = [];
+  function label(x, z, name, sub, planOnly, q) {
+    const el = document.createElement("div"); el.className = "rl" + (q ? " q" : "");
+    el.innerHTML = `<b>${name}</b>${sub ? `<span>${sub}</span>` : ""}`; labelsEl.appendChild(el);
+    labels.push({ p: new THREE.Vector3(x, 0.15, z), el, planOnly });
+  }
+  label(1.66, 1.75, "Спальня", "3,33 × 4,42 · ≈14,7 м²");
+  label(5.0, 1.9, "Гостиная + кабинет", "3,32 × 5,27 · ≈17,5 м²");
+  label(8.6, 3.4, "Кухня", "3,13 × 3,28 · ≈10,3 м²");
+  label(4.6, 5.95, "Прихожая", "ширина 1,53");
+  label(1.0, 5.7, "Санузел Б", "2,27? × ?", false, true);
+  label(9.3, 6.0, "Санузел А", "размеры ?", false, true);
+  label(8.6, 0.5, "Лоджия?", "уточнить", false, true);
+
+  /* Виды */
+  const views = {
+    over: { pos: [5.1, 7.2, 9.9], tgt: [5.1, 0, 3.6], fov: 40, cut: true },
+    plan: { pos: [5.1, 17, 3.62], tgt: [5.1, 0, 3.6], fov: 40, cut: true, plan: true },
+    bed: { pos: [3.05, 1.6, 4.15], tgt: [0.6, 0.75, 1.4], fov: 62, cut: false },
+    live: { pos: [3.85, 1.6, 0.35], tgt: [6.2, 0.7, 4.3], fov: 62, cut: false },
+    work: { pos: [4.65, 1.55, 1.95], tgt: [6.5, 0.9, 1.05], fov: 62, cut: false },
+    kit: { pos: [7.35, 1.6, 4.5], tgt: [9.7, 0.9, 1.9], fov: 62, cut: false },
+    hall: { pos: [8.1, 1.6, 5.2], tgt: [3.0, 0.9, 6.5], fov: 62, cut: false }
+  };
+  let current = "over", fullWalls = false, planMode = false, anim = null;
+  const wallBtn = document.getElementById("t-walls");
+  function setWalls(full) { fullWalls = full; applyCut(full ? H : CUT); wallBtn.setAttribute("aria-pressed", String(full)); }
+  function fitPlanDistance() {
+    const w = 11.3, d = 7.9, vf = THREE.MathUtils.degToRad(camera.fov) / 2;
+    return Math.max(d / 2 / Math.tan(vf), w / 2 / (Math.tan(vf) * camera.aspect)) * 1.08;
+  }
+  function go(name) {
+    const v = views[name]; current = name; planMode = !!v.plan;
+    document.querySelectorAll(".toolbar .btn[data-view]").forEach(b => b.setAttribute("aria-pressed", String(b.dataset.view === name)));
+    setWalls(!v.cut);
+    const pos = new THREE.Vector3(...v.pos), tgt = new THREE.Vector3(...v.tgt);
+    if (v.plan) pos.y = fitPlanDistance();
+    if (name === "over") { const k = Math.max(1, 1.25 / camera.aspect); pos.sub(tgt).multiplyScalar(k).add(tgt); }
+    controls.minPolarAngle = 0;
+    const from = { p: camera.position.clone(), t: controls.target.clone(), f: camera.fov };
+    if (reduce) { camera.position.copy(pos); controls.target.copy(tgt); camera.fov = v.fov; camera.updateProjectionMatrix(); return; }
+    anim = { t0: performance.now(), dur: 750, from, to: { p: pos, t: tgt, f: v.fov } };
+  }
+  document.querySelectorAll("[data-view]").forEach(b => b.addEventListener("click", () => {
+    go(b.dataset.view);
+    if (b.classList.contains("go")) stage.scrollIntoView({ behavior: reduce ? "auto" : "smooth", block: "center" });
+  }));
+  wallBtn.addEventListener("click", () => setWalls(!fullWalls));
+
+  /* Подсказка с размером */
+  const tip = document.getElementById("tip");
+  const ray = new THREE.Raycaster(), ndc = new THREE.Vector2();
+  function pick(clientX, clientY) {
+    const r = renderer.domElement.getBoundingClientRect();
+    ndc.set(((clientX - r.left) / r.width) * 2 - 1, -((clientY - r.top) / r.height) * 2 + 1);
+    ray.setFromCamera(ndc, camera);
+    const hit = ray.intersectObjects(pickables.filter(o => o.visible), false)[0];
+    if (hit) {
+      const it = hit.object.userData.item;
+      tip.innerHTML = `${it.name}${it.size ? `<span>${it.size}</span>` : ""}`;
+      tip.style.left = (clientX - r.left) + "px"; tip.style.top = (clientY - r.top) + "px"; tip.hidden = false;
+    } else tip.hidden = true;
+  }
+  renderer.domElement.addEventListener("pointermove", e => { if (e.pointerType === "mouse" && !e.buttons) pick(e.clientX, e.clientY); });
+  renderer.domElement.addEventListener("pointerleave", () => { tip.hidden = true; });
+  let downAt = null;
+  renderer.domElement.addEventListener("pointerdown", e => { downAt = [e.clientX, e.clientY]; document.getElementById("hint").hidden = true; });
+  renderer.domElement.addEventListener("pointerup", e => { if (downAt && Math.hypot(e.clientX - downAt[0], e.clientY - downAt[1]) < 6) pick(e.clientX, e.clientY); });
+
+  /* Размер, цикл */
+  function resize() {
+    const w = stage.clientWidth, h = stage.clientHeight;
+    renderer.setSize(w, h, false); camera.aspect = w / h; camera.updateProjectionMatrix();
+  }
+  new ResizeObserver(resize).observe(stage); resize();
+  const v0 = views.over; camera.position.set(...v0.pos); controls.target.set(...v0.tgt);
+  { const k = Math.max(1, 1.25 / camera.aspect); camera.position.sub(controls.target).multiplyScalar(k).add(controls.target); }
+  setWalls(false);
+
+  const tmp = new THREE.Vector3();
+  const ease = t => t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
+  function loop(now) {
+    if (anim) {
+      const k = Math.min(1, (now - anim.t0) / anim.dur), e = ease(k);
+      camera.position.lerpVectors(anim.from.p, anim.to.p, e);
+      controls.target.lerpVectors(anim.from.t, anim.to.t, e);
+      camera.fov = anim.from.f + (anim.to.f - anim.from.f) * e; camera.updateProjectionMatrix();
+      if (k === 1) anim = null;
+    }
+    controls.update();
+    renderer.render(scene, camera);
+    const w = stage.clientWidth, h = stage.clientHeight;
+    const interior = camera.position.y < 2.2;
+    labels.forEach(l => {
+      tmp.copy(l.p).project(camera);
+      const show = !interior && tmp.z < 1 && Math.abs(tmp.x) < 1.05 && Math.abs(tmp.y) < 1.05 && (!l.planOnly || planMode);
+      l.el.hidden = !show;
+      if (show) { l.el.style.left = ((tmp.x + 1) / 2 * w) + "px"; l.el.style.top = ((1 - tmp.y) / 2 * h) + "px"; }
+    });
+    requestAnimationFrame(loop);
+  }
+  requestAnimationFrame(loop);
+})();
+</script>
+</html>
