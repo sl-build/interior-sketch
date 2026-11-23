@@ -1,0 +1,120 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="2190" height="2040" viewBox="0 0 1460 1360" role="img" aria-labelledby="title desc">
+  <title id="title">Длина каждой стены в сантиметрах</title>
+  <desc id="desc">Числа нанесены вдоль соответствующих стен, с засечками на обоих концах. Окна наверху, вход внизу. Основа — план аналога и рабочая модель до обмера.</desc>
+  <style>
+    text{font-family:Arial,sans-serif;fill:#233b34}
+    .kicker{font-size:17px;font-weight:bold;letter-spacing:1.6px;fill:#4d6759}
+    .title{font-size:54px;font-weight:bold}.sub{font-size:23px;fill:#405a50}
+    .room{font-size:24px;font-weight:bold}.smallroom{font-size:20px;font-weight:bold}.note{font-size:15px;fill:#50665b}
+    .wall{fill:none;stroke:#344c44;stroke-width:4.4;stroke-linecap:square}
+    .window{fill:none;stroke:#387e88;stroke-width:5}.radiator{fill:#c6d8d5;stroke:#779c99;stroke-width:1}
+    .dl,.ext{fill:none;stroke:#507c98;stroke-width:1.05}.ext{stroke-width:.8}
+    .dv{fill:#194b6d;font-weight:bold;text-anchor:middle}.label{font-weight:bold;font-size:22px}
+    .foot{font-size:20px;fill:#40574b}.rule{stroke:#ccd4ca;stroke-width:1.3}
+  </style>
+  <defs>
+    <g id="outlet" fill="#fffefa" stroke="#496c62" stroke-width="1.7">
+      <rect x="-8" y="-5" width="16" height="10" rx="1.4"/>
+      <path d="M-3 0h.1M3 0h.1" stroke-width="2.8" stroke-linecap="round"/>
+    </g>
+    <path id="switch" d="M0 -6l6 6 -6 6 -6 -6Z" fill="#faf2df" stroke="#a15537" stroke-width="2"/>
+  </defs>
+  <rect width="1460" height="1360" fill="#f9f8f2"/>
+  <text x="67" y="49" class="kicker">РАБОЧИЙ ПЛАН</text>
+  <text x="1390" y="49" text-anchor="end" class="kicker">ПОТОЛОК 268 СМ</text>
+  <text x="64" y="117" class="title">Длины стен</text>
+  <text x="67" y="164" class="sub">Все размеры в сантиметрах. Каждая синяя линия идёт от одной засечки до другой.</text>
+  <g transform="translate(130 239) scale(1.16)">
+    <!-- Координаты помещений заданы в сантиметрах согласно APARTMENT.md. -->
+    <g fill="#f0e9da">
+      <rect width="333" height="442"/><rect x="353" width="332" height="527"/>
+    </g>
+    <rect x="705" y="142" width="313" height="328" fill="#e6eadb"/>
+    <rect x="725" y="20" width="270" height="122" fill="#e8eee6" stroke="#819786" stroke-width="2" stroke-dasharray="6 5"/>
+    <g fill="#dfeae7"><rect x="0" y="455" width="205" height="227"/><rect x="852" y="480" width="166" height="212"/></g>
+    <path d="M215 455H333V539H705V470H842V692H556V675H215Z" fill="#ede1d2"/>
+    <path d="M240 442h80v13h-80zM585 527h80v12h-80zM205 565h10v60h-10zM842 555h10v70h-10z" fill="#ede1d2"/>
+    <g class="wall">
+      <path d="M85 0H0V442H240M320 442h13V0H245"/>
+      <path d="M440 0H353V527H585M665 527h20V0H600"/>
+      <path d="M745 142H705V470H725M805 470h213V142H895"/>
+      <path d="M205 565V455H0V682H205V625M852 555V480H1018V692H852V625"/>
+      <path d="M240 455H215V565M215 625V675H556V692H575M665 692H842V625M842 555V480H805"/>
+      <path d="M320 455h13v84H585M665 539h40V480h20"/>
+    </g>
+    <path d="M215 675H556V692" fill="none" stroke="#a35e37" stroke-width="4.6"/>
+    <path d="M497 672h45" fill="none" stroke="#694536" stroke-width="5"/>
+    <text x="519" y="662" text-anchor="middle" class="note">два щитка</text>
+    <g class="window"><path d="M85 0H245M440 0H600M745 142H825"/></g>
+    <g class="radiator"><rect x="106" y="9" width="118" height="8" rx="2"/><rect x="462" y="9" width="116" height="8" rx="2"/><rect x="749" y="150" width="68" height="8" rx="2"/></g>
+    <g fill="none" stroke="#9a795b">
+      <path d="M895 142v70M725 470v-80" stroke-width="2.6"/>
+      <path d="M825 142a70 70 0 0 0 70 70M805 470a80 80 0 0 0 -80 -80" stroke-width="1.8" stroke-dasharray="5 4"/>
+    </g>
+    <g>
+      <use href="#outlet" x="14" y="127"/><use href="#outlet" x="319" y="348"/>
+      <use href="#outlet" x="145" y="429"/><use href="#switch" x="225" y="429"/>
+      <use href="#outlet" x="367" y="107"/><use href="#outlet" x="367" y="363"/><use href="#outlet" x="671" y="327"/>
+      <use href="#outlet" x="487" y="514"/><use href="#switch" x="571" y="514"/>
+      <use href="#outlet" x="1002" y="263"/><use href="#outlet" x="1002" y="313"/>
+      <use href="#outlet" x="720" y="280"/><use href="#switch" x="819" y="457"/>
+    </g>
+    <g id="wall-dimensions">
+      <g id="bed-window"><path class="ext" d="M0 0V-29M333 0V-29"/><path class="dl" d="M0 -23H333m-4 4 8 -8M-4 -19l8 -8"/><text class="dv" x="166.5" y="-29" font-size="18">333</text></g>
+      <g id="bed-left"><path class="ext" d="M0 0H-33M0 442H-33"/><path class="dl" d="M-27 0V442m-4 4 8 -8M-31 4l8 -8"/><text class="dv" transform="translate(-33 221) rotate(-90)" font-size="18">442</text></g>
+      <g id="bed-right"><path class="dl" d="M300 0V442m-4 4 8 -8M296 4l8 -8"/><text class="dv" transform="translate(294 221) rotate(-90)" font-size="18">441</text></g>
+      <g id="bed-entry"><path class="dl" d="M0 407H333m-4 4 8 -8M-4 411l8 -8"/><text class="dv" x="166.5" y="401" font-size="18">333</text></g>
+      <g id="bed-wardrobe"><path class="ext" d="M240 362v78"/><path class="dl" d="M0 367H240m-4 4 8 -8M-4 371l8 -8"/><text class="dv" x="120" y="361" font-size="15">≈240 до проёма</text></g>
+      <g id="living-window"><path class="ext" d="M353 0V-29M685 0V-29"/><path class="dl" d="M353 -23H685m-4 4 8 -8M349 -19l8 -8"/><text class="dv" x="519" y="-29" font-size="18">332</text></g>
+      <g id="living-left"><path class="dl" d="M388 0V527m-4 4 8 -8M384 4l8 -8"/><text class="dv" transform="translate(406 263.5) rotate(-90)" font-size="18">527</text></g>
+      <g id="living-right"><path class="dl" d="M650 0V527m-4 4 8 -8M646 4l8 -8"/><text class="dv" transform="translate(644 263.5) rotate(-90)" font-size="18">525</text></g>
+      <g id="living-entry"><path class="dl" d="M353 487H685m-4 4 8 -8M349 491l8 -8"/><text class="dv" x="519" y="481" font-size="18">333</text></g>
+      <g id="kitchen-window"><path class="ext" d="M705 142V126M1018 142V126"/><path class="dl" d="M705 132H1018m-4 4 8 -8M701 136l8 -8"/><text class="dv" x="861.5" y="126" font-size="18">≈313</text></g>
+      <g id="kitchen-seat"><path class="dl" d="M749 142V470m-4 4 8 -8M745 146l8 -8"/><text class="dv" transform="translate(767 312) rotate(-90)" font-size="18">328</text></g>
+      <g id="kitchen-cabinets"><path class="ext" d="M1018 142H1051M1018 470H1051"/><path class="dl" d="M1045 142V470m-4 4 8 -8M1041 146l8 -8"/><text class="dv" transform="translate(1063 306) rotate(-90)" font-size="18">≈328</text></g>
+      <g id="kitchen-entry"><path class="dl" d="M705 443H1018m-4 4 8 -8M701 447l8 -8"/><text class="dv" x="861.5" y="437" font-size="18">313</text></g>
+      <g id="bath-top"><path class="dl" d="M0 487H205m-4 4 8 -8M-4 491l8 -8"/><text class="dv" x="102.5" y="481" font-size="18">≈205</text></g>
+      <g id="bath-bottom"><path class="dl" d="M0 660H205m-4 4 8 -8M-4 664l8 -8"/><text class="dv" x="102.5" y="654" font-size="18">≈205</text></g>
+      <g id="bath-left"><path class="ext" d="M0 455H-33M0 682H-33"/><path class="dl" d="M-27 455V682m-4 4 8 -8M-31 459l8 -8"/><text class="dv" transform="translate(-33 568.5) rotate(-90)" font-size="18">227?</text></g>
+      <g id="bath-right"><path class="dl" d="M184 455V682m-4 4 8 -8M180 459l8 -8"/><text class="dv" transform="translate(178 568.5) rotate(-90)" font-size="16">≈227</text></g>
+      <g id="wc-top"><path class="dl" d="M852 505H1018m-4 4 8 -8M848 509l8 -8"/><text class="dv" x="935" y="499" font-size="16">≈166</text></g>
+      <g id="wc-bottom"><path class="dl" d="M852 671H1018m-4 4 8 -8M848 675l8 -8"/><text class="dv" x="935" y="665" font-size="16">≈166</text></g>
+      <g id="wc-left"><path class="dl" d="M877 480V692m-4 4 8 -8M873 484l8 -8"/><text class="dv" transform="translate(895 586) rotate(-90)" font-size="16">≈212</text></g>
+      <g id="wc-right"><path class="ext" d="M1018 480H1051M1018 692H1051"/><path class="dl" d="M1045 480V692m-4 4 8 -8M1041 484l8 -8"/><text class="dv" transform="translate(1063 586) rotate(-90)" font-size="18">≈212</text></g>
+      <g id="hall-to-bedroom"><path class="dl" d="M215 501H333m-4 4 8 -8M211 505l8 -8"/><text class="dv" x="274" y="495" font-size="15">≈118</text></g>
+      <g id="hall-to-kitchen"><path class="dl" d="M705 511H842m-4 4 8 -8M701 515l8 -8"/><text class="dv" x="773.5" y="505" font-size="16">137</text></g>
+      <g id="hall-main-width"><path class="dl" d="M682 539V692m-4 4 8 -8M678 543l8 -8"/><text class="dv" transform="translate(676 615.5) rotate(-90)" font-size="17">153</text></g>
+      <g id="hall-kitchen-depth"><path class="dl" d="M816 480V692m-4 4 8 -8M812 484l8 -8"/><text class="dv" transform="translate(810 586) rotate(-90)" font-size="15">≈212</text></g>
+      <g id="hall-bedroom-return"><path class="dl" d="M310 455v84m-3 3 6 -6M307 458l6 -6"/><path class="ext" d="M306 455h27m-27 84h27"/><text class="dv" transform="translate(305 479) rotate(-90)" font-size="14">≈84</text></g>
+      <g id="hall-kitchen-return"><path class="dl" d="M723 480v59m-3 3 6 -6M720 483l6 -6"/><path class="ext" d="M705 480h22m-22 59h22"/><text class="dv" transform="translate(740 499) rotate(-90)" font-size="14">≈59</text></g>
+      <g id="hall-upper-run"><path class="ext" d="M333 542v24m372 -24v24"/><path class="dl" d="M333 562H705m-4 4 8 -8M329 566l8 -8"/><text class="dv" x="519" y="556" font-size="15">≈372</text></g>
+      <g id="hall-narrow-width"><path class="dl" d="M351 539V675m-4 4 8 -8M347 543l8 -8"/><text class="dv" transform="translate(345 619) rotate(-90)" font-size="16">≈136</text></g>
+      <g id="hall-entry-left"><path class="ext" d="M215 675V734M556 692V734"/><path class="dl" d="M215 728H556m-4 4 8 -8M211 732l8 -8"/><text class="dv" x="385.5" y="722" font-size="17">≈341 до ступени</text></g>
+      <g id="hall-door"><path class="ext" d="M575 692V734M665 692V734"/><path class="dl" d="M575 728H665m-4 4 8 -8M571 732l8 -8"/><text class="dv" x="620" y="722" font-size="15">≈90</text></g>
+      <g id="hall-entry-right"><path class="ext" d="M665 692V734M842 692V734"/><path class="dl" d="M665 728H842m-4 4 8 -8M661 732l8 -8"/><text class="dv" x="753.5" y="722" font-size="17">≈177</text></g>
+      <g id="hall-full"><path class="ext" d="M215 675V778M842 692V778"/><path class="dl" d="M215 772H842m-4 4 8 -8M211 776l8 -8"/><text class="dv" x="528.5" y="766" font-size="18">≈627</text></g>
+    </g>
+    <g text-anchor="middle">
+      <text x="154" y="187" class="room">Спальня</text>
+      <text x="154" y="214" class="note">окно наверху</text>
+      <text x="519" y="246" class="room">Гостиная</text>
+      <text x="519" y="273" class="note">окно наверху</text>
+      <text x="859" y="70" class="smallroom">Лоджия</text><text x="859" y="95" class="note">длина и глубина — обмер</text>
+      <text x="888" y="284" class="room">Кухня</text>
+      <text x="888" y="310" class="note">гарнитур справа →</text>
+      <text x="98" y="579" class="smallroom">Ванная · Б</text><text x="952" y="585" class="smallroom">Туалет · А</text>
+      <text x="474" y="623" class="smallroom">Прихожая и коридор</text>
+      <text x="620" y="666" class="note">вход</text>
+      <path d="M620 685v-14m-4 6 4 -6 4 6" fill="none" stroke="#526c60" stroke-width="1.6"/>
+    </g>
+  </g>
+  <path d="M66 1166H1390" class="rule"/>
+  <text x="67" y="1205" class="label">Откуда числа</text>
+  <text x="67" y="1240" class="foot">333 — подпись на плане аналога.</text>
+  <text x="67" y="1272" class="foot">≈ — расчёт по модели. ? — спорная подпись.</text>
+  <text x="67" y="1311" class="foot">Размер стены включает проёмы между её углами.</text>
+  <text x="661" y="1205" class="label">Что уточнить рулеткой</text>
+  <text x="661" y="1240" class="foot">В ванной подпись читается как 227 см, возможно 237 см.</text>
+  <text x="661" y="1272" class="foot">Рыжим показана стена от ступени у щитков до санузла Б.</text>
+  <text x="661" y="1304" class="foot">В модели ступень 17 см. Проверить глубину и длину стены.</text>
+</svg>

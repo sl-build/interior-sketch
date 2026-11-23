@@ -3,10 +3,9 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="robots" content="noindex, nofollow">
-<title>Светлый интерьер — эскиз обстановки</title>
+<title>Квартира · 3D и рендеры по комнатам</title>
 <meta name="claude:viewport-fit-sides" content="cover">
 <style>
-/* Layout: 3D-макет на всю ширину сверху, под ним зоны и список покупок в две колонки; на телефоне всё в одну */
 :root {
   --bg: #f4f0e9;
   --surface: #fffdf9;
@@ -63,87 +62,64 @@ h1 { font-family: var(--font-display); font-weight: 700; font-size: clamp(24px, 
 .hint { position: absolute; left: 12px; bottom: 10px; font-size: 12px; color: var(--muted); background: color-mix(in srgb, var(--surface) 80%, transparent); padding: 3px 8px; border-radius: 6px; }
 .err { position: absolute; inset: 0; display: grid; place-items: center; padding: 24px; text-align: center; color: var(--muted); }
 
-.cols { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.15fr); gap: 28px; align-items: start; }
-@media (max-width: 880px) { .cols { grid-template-columns: minmax(0, 1fr); } }
-h2 { font-family: var(--font-display); font-weight: 500; font-size: 19px; margin: 0 0 14px; letter-spacing: 0; }
-.zones { display: grid; gap: 12px; }
-.zone { background: var(--surface); border: 1px solid var(--line); border-radius: 10px; padding: 14px 16px; }
-.zone h3 { margin: 0; font-size: 15.5px; font-weight: 600; display: flex; justify-content: space-between; gap: 12px; flex-wrap: wrap; }
-.zone h3 span { font-family: var(--font-mono); font-weight: 400; font-size: 12.5px; color: var(--muted); font-variant-numeric: tabular-nums; }
-.zone p, .zone ul { margin: 6px 0 0; color: var(--ink); }
-.zone ul { padding-left: 18px; }
-.zone li + li { margin-top: 3px; }
-.zone .go { margin-top: 10px; font-size: 12.5px; padding: 5px 10px; }
-
-.shop { background: var(--surface); border: 1px solid var(--line); border-radius: 10px; overflow: hidden; }
-.shop-head { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: baseline; gap: 6px 16px; padding: 14px 16px; border-bottom: 1px solid var(--line); }
-.total { font-family: var(--font-mono); font-size: 18px; font-variant-numeric: tabular-nums; }
-.total small { font-family: var(--font-body); font-size: 12.5px; color: var(--muted); display: block; text-align: right; }
-.tbl { overflow-x: auto; }
-table { width: 100%; border-collapse: collapse; font-size: 13.5px; }
-th, td { text-align: left; padding: 7px 10px; border-bottom: 1px solid var(--line); vertical-align: top; }
-th { font-size: 11.5px; text-transform: uppercase; letter-spacing: .06em; color: var(--muted); font-weight: 600; }
-tr.grp td { background: var(--bg); font-weight: 600; font-size: 12.5px; letter-spacing: .02em; }
-td.num { font-family: var(--font-mono); font-variant-numeric: tabular-nums; white-space: nowrap; text-align: right; }
-td.sz { font-family: var(--font-mono); font-size: 12px; color: var(--muted); white-space: nowrap; }
-.src { font-size: 11px; padding: 1px 7px; border-radius: 999px; border: 1px solid var(--line); white-space: nowrap; }
-.src.new { border-color: var(--accent); color: var(--accent); }
-tr.done td:not(.ck) { text-decoration: line-through; color: var(--muted); }
-td.ck { width: 28px; }
-input[type="checkbox"] { accent-color: var(--accent); width: 16px; height: 16px; }
-.note { font-size: 12.5px; color: var(--muted); padding: 10px 16px; }
-
-.rules { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 12px; }
-.rule { border-top: 2px solid var(--oak); padding-top: 10px; }
-.rule h3 { margin: 0 0 4px; font-size: 14.5px; }
-.rule p { margin: 0; color: var(--muted); font-size: 14px; }
-.caveat { background: var(--warn-bg); border: 1px solid color-mix(in srgb, var(--warn) 35%, transparent); border-radius: 10px; padding: 12px 16px; font-size: 14px; }
-.caveat b { color: var(--warn); }
-.caveat ul { margin: 6px 0 0; padding-left: 18px; }
-@media (prefers-reduced-motion: reduce) { .btn { transition: none; } }
+a { color: #634a32; text-underline-offset: .2em; }
+.page-links { display: flex; gap: 10px 20px; flex-wrap: wrap; align-items: center; }
+.gallery { display: grid; gap: 12px; min-width: 0; scroll-margin-top: 12px; }
+.gallery h2 { margin: 0; font-size: clamp(22px,3vw,30px); line-height: 1.2; }
+.gallery figure { min-width: 0; margin: 0; }
+.gallery-photo { display: block; width: 100%; height: clamp(240px,58vh,740px); object-fit: contain; background: var(--stage); border-radius: 12px; touch-action: pan-y pinch-zoom; }
+.gallery-bar { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 16px; margin-top: 10px; }
+.gallery-bar select { flex: 1 1 300px; min-width: 0; max-width: 100%; font: inherit; color: var(--ink); background: var(--surface); border: 1px solid var(--line); border-radius: 8px; padding: 9px; }
+.slide-nav { display: inline-flex; align-items: center; gap: 8px; }
+.slide-nav button { min-width: 44px; min-height: 44px; font-size: 20px; line-height: 1; }
+.slide-count { min-width: 6ch; text-align: center; font-variant-numeric: tabular-nums; }
+@media (max-width:600px) {
+  .gallery-photo { height: clamp(220px,78vw,52vh); }
+  .gallery-bar select { flex-basis: 100%; }
+  .gallery-bar { justify-content: space-between; }
+}
+.notes { max-width: 84ch; margin: 0; }
 </style>
 
 <div class="wrap">
   <header>
     <div>
-      <h1>Светлый интерьер: эскиз обстановки</h1>
-      <p class="meta">Белые стены · тёплые серые оттенки · дерево · готовая отделка</p>
+      <h1>Квартира в 3D</h1>
+      <p class="meta">Эскиз интерьера и варианты обстановки</p>
     </div>
-    <div class="facts">
-      <span class="fact">спальня ≈14,7 м²</span>
-      <span class="fact">гостиная ≈17,5 м²</span>
-      <span class="fact">кухня ≈10,3 м²</span>
-      <span class="fact">потолок 2,68 м</span>
-    </div>
+    <nav class="page-links" aria-label="Разделы страницы">
+      <a href="#renders">Рендеры по комнатам ↓</a>
+      <a id="ideas-link" href="#renders">Варианты 3 и 4</a>
+      <a href="previous.html">Прежняя 3D-версия квартиры</a>
+    </nav>
   </header>
-
-  <div class="palette" aria-label="Предлагаемые цвета мебели и текстиля">
-    <span><i style="background:#f7f4ed" aria-hidden="true"></i>Тёплый белый</span>
-    <span><i style="background:#d9c3a2" aria-hidden="true"></i>Светлое дерево</span>
-    <span><i style="background:#76513a" aria-hidden="true"></i>Орех — комод, журнальный столик, рама зеркала</span>
-    <span><i style="background:#5e3e2b" aria-hidden="true"></i>Тёмный орех — стол и тумба под ТВ</span>
-    <span><i style="background:#262422" aria-hidden="true"></i>Чёрный рифлёный фасад тумбы</span>
-    <span><i style="background:#b8995e" aria-hidden="true"></i>Латунь — ручки и крючки</span>
-    <span><i style="background:#b8b3ab" aria-hidden="true"></i>Тёплый серый — кровать и диван</span>
-    <span><i style="background:#c0bbb4" aria-hidden="true"></i>Светлый тёплый серый — шкаф спальни</span>
-    <span><i style="background:#c3beb7" aria-hidden="true"></i>Светлый тёплый серый — шторы</span>
-    <span><i style="background:#f3f1ec" aria-hidden="true"></i>Белый — шкаф прихожей, тюль</span>
-  </div>
 
   <section class="viewer" aria-label="3D-макет">
     <div class="toolbar" role="toolbar" aria-label="Виды">
-      <button class="btn" id="v-over" data-view="over" aria-pressed="true">Обзор</button>
+      <button class="btn" data-view="bed" aria-pressed="false">Спальня</button>
+      <button class="btn" data-view="storage" aria-pressed="false">К шкафу</button>
+      <button class="btn" data-view="bedPlan" aria-pressed="false">Спальня сверху</button>
+      <span class="sep" aria-hidden="true"></span>
+      <button class="btn" id="v-over" data-view="over" aria-pressed="true">Вся квартира</button>
       <button class="btn" id="v-plan" data-view="plan" aria-pressed="false">План сверху</button>
       <span class="sep" aria-hidden="true"></span>
-      <button class="btn" id="v-bed" data-view="bed" aria-pressed="false">Спальня</button>
       <button class="btn" id="v-live" data-view="live" aria-pressed="false">Гостиная</button>
       <button class="btn" id="v-work" data-view="work" aria-pressed="false">Рабочее место</button>
       <button class="btn" id="v-kit" data-view="kit" aria-pressed="false">Кухня</button>
+      <button class="btn" data-view="cabinets" aria-pressed="false">Кухня · весь гарнитур</button>
+      <button class="btn" data-view="dining" aria-pressed="false">Кухня · к столу</button>
       <button class="btn" id="v-hall" data-view="hall" aria-pressed="false">Прихожая</button>
+      <button class="btn" data-view="entry" aria-pressed="false">Входная дверь и щитки</button>
+      <button class="btn" data-view="corridor" aria-pressed="false">От входа к санузлу Б</button>
+      <button class="btn" data-view="wc" aria-pressed="false">Санузел А · туалет</button>
+      <button class="btn" data-view="bath" aria-pressed="false">Санузел Б · ванная</button>
+      <button class="btn" data-view="bathLeft" aria-pressed="false">Ванная · к раковине</button>
       <span class="sep" aria-hidden="true"></span>
       <button class="btn" id="t-walls" aria-pressed="false">Стены в полный рост</button>
       <button class="btn" id="t-coffee" aria-pressed="false">Показать журнальный столик</button>
-      <button class="btn" id="t-kitcol" aria-pressed="false">Кухня в шоколаде</button>
+      <select class="btn" id="t-kitcol" aria-label="Цвет кухни">
+        <option value="milk">Молочная кухня</option><option value="choc">Шоколадная кухня</option><option value="sage">Шалфейная кухня</option>
+      </select>
     </div>
     <div class="stage" id="stage">
       <div class="labels" id="labels"></div>
@@ -152,172 +128,154 @@ input[type="checkbox"] { accent-color: var(--accent); width: 16px; height: 16px;
     </div>
   </section>
 
-  <div class="caveat">
-    <b>Это предварительный эскиз.</b> Стены построены по схеме-аналогу; индивидуального обмера ещё нет. Контур, проёмы и размеры мебели нужно сверить перед покупками.
-    <ul>
-      <li>Окна, двери и санузлы стоят ориентировочно, сантехника нарисована условно. Ширина санузла Б неизвестна, его длина 2,27 м спорная.</li>
-      <li>Перед кухней на исходной схеме видна лоджия или балкон. Это нужно уточнить.</li>
-      <li>Крупные вещи (шкаф, кухня, диван) покупайте только после замера своей квартиры.</li>
-      <li>Шкаф прихожей 120×50 стоит в расширении справа от входа. На обмере проверить, куда открываются входная дверь и дверь санузла A.</li>
-      <li>Кухня и шкафы показаны как стандартные модули. Модель и цвет ещё не выбраны: цены в списке — ориентиры по похожим готовым вариантам.</li>
-      <li>Для спальни примеряем замену кровати на тёпло-серую и светлый серый шкаф. Конкретные модели и цены ещё не выбраны. Матрас 160×200, стол 140×65 и кресло здесь условные; внешние габариты кровати уточнить перед покупкой. Стены белые, готовую отделку сохраняем.</li>
-    </ul>
-  </div>
-
-  <div class="cols">
-    <section>
-      <h2>Что где и почему</h2>
-      <div class="zones">
-        <article class="zone">
-          <h3>Спальня · комната 1 <span>3,33 × 4,42 м</span></h3>
-          <p>Белые стены, тёпло-серая мягкая кровать со стёганым изголовьем и светлый тёплый серый шкаф без выступающих ручек. Прикроватные тумбочки белые. Деревянный акцент — ореховый комод напротив кровати. Рабочее место в гостиной.</p>
-          <ul>
-            <li>Тёпло-серая кровать с высоким изголовьем в вертикальную простёжку, изголовьем к боковой стене, на цельном мягком основании без ножек (снизу утопленный тёмный цоколь) — вариант замены имеющейся. В модели временно принят матрас 160×200; проход около 0,8 м относится только к этой условной модели. Внести реальные внешние габариты выбранного каркаса.</li>
-            <li>Светлый серый шкаф от пола до потолка вдоль стены с дверью, чуть светлее кровати: гладкие фасады, антресоль сверху и длинные тонкие латунные ручки. Белые тумбочки у кровати. Комод напротив кровати — в орехе, как мебель гостиной. Размер шкафа и открывание створок уточнить по обмеру.</li>
-            <li>В спальне светло-серые шторы blackout с тёплым подтоном, белый тюль на всю ширину окна и светлое постельное бельё. При выборе ткани проверить заявленную степень затемнения; размер карниза и полотен — по обмеру окна.</li>
-          </ul>
-          <button class="btn go" data-view="bed">Показать спальню</button>
-        </article>
-        <article class="zone">
-          <h3>Гостиная и кабинет · комната 2 <span>3,32 × 5,27 м</span></h3>
-          <p>Открытая воздушная гостиная со свободным центром: рабочее место у окна, диван вдоль стены, закрытая тумба под ТВ. Вся мебель на ножках, под ней виден пол. Минимум предметов на виду.</p>
-          <ul>
-            <li>Стол у окна вдоль боковой стены: свет падает сбоку, экран не бликует. Столешница в тёмном орехе и светлые ножки. Сравнить замену с обновлением своего стола после проверки его материала. На столе свои ноутбук и монитор. Размер 140×65 условный, розетки и радиатор уточнить.</li>
-            <li>Рабочее кресло показано светло-бежевым; конкретное кресло ещё не выбрано. Для задвигания под стол нужны его габариты, высота подлокотников и свободное место между опорами стола.</li>
-            <li>Поперёк комнаты мебель не ставим. Рабочую зону и диван разделяет свободное пространство.</li>
-            <li>Диван и шторы в близких тёплых серых оттенках, на окне белый тюль. Диван на высоких тонких ножках (просвет 15–18 см), без юбки и цоколя, у длинной стены; раскладной механизм выбирать, если нужны ночёвки гостей. Рядом торшер с тёплым светом для вечера.</li>
-            <li>Длинная низкая тумба под телевизором на ореховых ножках высотой около 18 см: корпус тёмный орех, фасады чёрные рифлёные, как в референсе. Журнальный столик в орехе оставлен как вариант: по умолчанию скрыт, показать его можно кнопкой над моделью.</li>
-            <li>Светлый ковёр под зоной дивана и тумбы. Открытые полки, растения и отдельное кресло для чтения в базовый эскиз не входят: уют дают фактуры (простёжка, рифление, тюль, ковёр), а не количество вещей.</li>
-          </ul>
-          <button class="btn go" data-view="work">Показать рабочее место</button>
-        </article>
-        <article class="zone">
-          <h3>Кухня <span>3,13 × 3,28 м</span></h3>
-          <ul>
-            <li>Шкафы вдоль стены с сантехникой, от окна: 30, плита 60, ящики 60, мойка 60, 45 под будущую посудомойку, дальше ниша под свой холодильник. Верхние шкафы 72 см, низ на 1,5 м, над ними антресоли до потолка — сверху ничего не пылится.</li>
-            <li>Все ширины стандартные: кухню можно собрать из готовых модулей (ориентир ≈40–45 тыс. со столешницей) или заказать распил. Сравним по смете.</li>
-            <li>Цвет ещё не выбран. Показана молочная кухня с ореховой столешницей; кнопкой над моделью — шоколадный низ с каменной столешницей.</li>
-            <li>Обеденная зона у стены с гостиной: мягкая банкетка 160×55 с ящиками под сиденьем, стол 120×70 на одной ноге в орехе и складной стул напротив. Подвес низко над столом, тёплый свет.</li>
-          </ul>
-          <button class="btn go" data-view="kit">Показать кухню</button>
-        </article>
-        <article class="zone">
-          <h3>Прихожая и санузлы</h3>
-          <ul>
-            <li>Коридор остаётся свободным: вдоль глухой стены ничего глубокого не ставим, проход около 1,5 м.</li>
-            <li>Белый шкаф 120×50 высотой 2,5 м с планкой до потолка стоит в расширении справа от входа, у стены санузла. До входной двери остаётся ≈45 см, коридор не сужается. Такие шкафы бывают готовыми и недорого; модель пока не выбрана.</li>
-            <li>На глухой стене узкая белая обувница 80×25 с тремя латунными крючками над ней и зеркало в рост в ореховой раме.</li>
-            <li>Санузлы: сантехника от застройщика (отделка STD). Стиральная машина в санузле, где есть выводы под неё.</li>
-          </ul>
-          <button class="btn go" data-view="hall">Показать прихожую</button>
-        </article>
-      </div>
-    </section>
-
-    <section>
-      <h2>Что покупать</h2>
-      <div class="shop">
-        <div class="shop-head">
-          <div><b>Список с ориентирами цен</b><div class="meta" style="margin:2px 0 0">Отмечайте купленное, отметки сохраняются в этом браузере</div></div>
-          <div class="total" id="total">—<small>частичная сумма; неизвестные цены отдельно</small></div>
+  <p class="notes">Положение сантехники и балконной двери сверено с видео. Размеры стен, мебели и расстояния до выключателей ориентировочные.
+    <a href="assets/working-plan.svg">Размеры стен</a> · <a href="assets/bath-layouts.svg">План двух санузлов</a></p>
+  <section id="renders" class="gallery" aria-labelledby="gallery-title" tabindex="0">
+    <h2 id="gallery-title">Рендеры по комнатам</h2>
+    <div class="toolbar" id="gallery-rooms" role="group" aria-label="Перейти к подборке"></div>
+    <figure>
+      <img id="gallery-photo" class="gallery-photo" src="assets/bedroom-layout-a-black.webp" alt="Спальня · Чёрный комод, вид от двери">
+      <figcaption class="gallery-bar">
+        <select id="gallery-slide" aria-label="Выбрать рендер">
+          <optgroup label="Спальня" id="photos-bed">
+            <option value="assets/bedroom-layout-a-black.webp">Чёрный комод · вид от двери</option>
+            <option value="assets/bedroom-layout-a-from-entry.webp">Ореховый комод · прежний вариант</option>
+            <option value="assets/bedroom-wardrobe-accents.webp">Шкаф у входа · три варианта фасадов</option>
+          </optgroup>
+          <optgroup label="Варианты 3 и 4" id="photos-ideas">
+            <option value="assets/apartment-rooms-3-plan.webp">Схема 3 · спальня в маленькой комнате</option>
+            <option value="assets/apartment-rooms-4-plan.webp">Схема 4 · спальня в большой комнате</option>
+            <option value="assets/apartment-rooms-3.webp">3 · спальня в маленькой, гостиная в большой</option>
+            <option value="assets/apartment-rooms-4.webp">4 · кабинет с диваном в маленькой, спальня в большой</option>
+            <option value="assets/apartment-rooms-4-aisle.webp">4 · проход между изголовьем и шкафом</option>
+            <option value="assets/bedroom-ideas-3-4.webp">Маленькая комната · оба плана с проходами</option>
+            <option value="assets/living-ideas-3-4.webp">Большая комната · оба плана с проходами</option>
+          </optgroup>
+          <optgroup label="Кухня" id="photos-kitchen">
+            <option value="assets/kitchen-from-entry-updated.webp">От двери · мойка справа, холодильник у окна</option>
+            <option value="assets/kitchen-palettes-milk-entry.webp">Молочная · от входа к окну</option>
+            <option value="assets/kitchen-palettes-milk-front.webp">Молочная · от банкетки на гарнитур</option>
+            <option value="assets/kitchen-palettes-milk-dining.webp">Молочная · от окна к столу</option>
+            <option value="assets/kitchen-palettes-chocolate-entry.webp">Шоколадная · от входа к окну</option>
+            <option value="assets/kitchen-palettes-chocolate-front.webp">Шоколадная · от банкетки на гарнитур</option>
+            <option value="assets/kitchen-palettes-chocolate-dining.webp">Шоколадная · от окна к столу</option>
+            <option value="assets/kitchen-palettes-sage-entry.webp">Шалфейная · от входа к окну</option>
+            <option value="assets/kitchen-palettes-sage-front.webp">Шалфейная · от банкетки на гарнитур</option>
+            <option value="assets/kitchen-palettes-sage-dining.webp">Шалфейная · от окна к столу</option>
+            <option value="assets/kitchen-built-in-hob-options.webp">Варочная панель · сравнение модулей под ней</option>
+            <option value="assets/kitchen-fridge-left-milk.webp">Ранняя примерка · молочные фасады</option>
+            <option value="assets/kitchen-fridge-left-chocolate.webp">Ранняя примерка · шоколадный низ</option>
+          </optgroup>
+          <optgroup label="Банкетка" id="photos-bench">
+            <option value="assets/kitchen-banquette-fit.webp">Удобная посадка · высота, спинка и подход к столу</option>
+            <option value="assets/kitchen-banquette-cushions.webp">Два короба и съёмные подушки</option>
+            <option value="assets/kitchen-banquette-wall-back.webp">Длинная спинка на петлях</option>
+            <option value="assets/kitchen-banquette-drawers.webp">Выдвижные ящики под сиденьем</option>
+          </optgroup>
+          <optgroup label="Прихожая" id="photos-hall">
+            <option value="assets/hall-mirror-niche-updated.webp">Шкаф и скамья · зеркало на торце</option>
+            <option value="assets/hall-floating-bench.webp">Подвесная скамья · обувь и место для робота</option>
+            <option value="assets/hall-end-mirror-compare.webp">Торец шкафа · варианты с деревом и зеркалом</option>
+            <option value="assets/hall-niche-greige.webp">Скамья и рейки в нише</option>
+            <option value="assets/hall-from-entry.webp">Шкаф и тумба · вид от входа</option>
+            <option value="assets/hall-two-doors.webp">Две створки · широкая тумба</option>
+            <option value="assets/hall-three-doors.webp">Три створки · узкая тумба</option>
+          </optgroup>
+          <optgroup label="Гостиная" id="photos-living">
+            <option value="assets/living-own-sofa-left-profile.webp">Свой диван слева · по фото боковины</option>
+            <option value="assets/living-own-sofa-left.webp">Диван слева · свой бежевый</option>
+            <option value="assets/living-slim-sofa-left.webp">Диван слева · низкие подлокотники</option>
+            <option value="assets/living-reuse.webp">Вариант А · свой стол и чёрный комод</option>
+            <option value="assets/living-own-sofa-oat.webp">Свой бежевый диван · овсяные подушки</option>
+            <option value="assets/living-own-sofa-olive.webp">Свой бежевый диван · оливковые подушки</option>
+            <option value="assets/living-walnut.webp">Вариант Б · низкая ореховая тумба</option>
+          </optgroup>
+          <optgroup label="Санузел А" id="photos-wc">
+            <option value="assets/baths-wc-from-entry.webp">От двери · унитаз, рукомойник и люки</option>
+            <option value="assets/baths-wc-morning.webp">Две стены · зеркальный шкаф и полотенце</option>
+          </optgroup>
+          <optgroup label="Санузел Б" id="photos-bath">
+            <option value="assets/baths-bath-from-entry.webp">От двери · ванна, раковина и полотенцесушитель</option>
+          </optgroup>
+        </select>
+        <div class="slide-nav">
+          <button type="button" class="btn" id="slide-prev" aria-label="Предыдущий рендер">←</button>
+          <span id="slide-count" class="slide-count" aria-live="polite"></span>
+          <button type="button" class="btn" id="slide-next" aria-label="Следующий рендер">→</button>
         </div>
-        <div class="tbl"><table>
-          <thead><tr><th></th><th>Вещь</th><th>Размер</th><th>Где</th><th style="text-align:right">₽</th></tr></thead>
-          <tbody id="shop"></tbody>
-        </table></div>
-        <p class="note">Цены — непроверенные ориентиры из первоначального эскиза, не предложения продавцов. Для новой кровати модель и цена ещё уточняются; проверить подходящий матрас. Шкафы и кухня — ориентир по похожим готовым, модель и цвет не выбраны. Строки «цена неизвестна» и группа «Можно позже» не входят в показанную сумму. Распил кухни сравним по смете мебельщиков. Доставку, сборку, недостающую технику и необходимость каждой покупки считать отдельно.</p>
-      </div>
-    </section>
-  </div>
-
-  <section>
-    <h2>Чтобы всё сочеталось</h2>
-    <div class="rules">
-      <div class="rule"><h3>Свободное пространство</h3><p>Свободный центр комнаты, закрытое хранение и минимум вещей на поверхностях. Каждый новый предмет добавляем под конкретную задачу.</p></div>
-      <div class="rule"><h3>Спокойная светлая основа</h3><p>Белые стены и прикроватные тумбочки; тёпло-серая кровать, светлый серый шкаф и серый текстиль. Дерево одной семьи — орех: стол, тумба под ТВ, комод, рама зеркала. Металл один — латунь. Журнальный столик можно добавить при необходимости.</p></div>
-      <div class="rule"><h3>Тёплый свет в несколько точек</h3><p>Все лампы тёплые, 2700–3000 K. Кроме верхнего света — торшер у дивана, лампа на столе и прикроватные лампы. Вечером верхний свет можно не включать.</p></div>
-      <div class="rule"><h3>Гостиная на ножках, спальня цельная</h3><p>В гостиной диван, тумба, стол и столик стоят на ножках: под ними виден пол, комната кажется больше и её легче убирать. В спальне кровать на цельном основании и шкаф до потолка — спокойно и без пыли под мебелью.</p></div>
-      <div class="rule"><h3>Фактуры вместо предметов</h3><p>Стёганое изголовье, рифлёные фасады, тюль и ковёр делают дом уютным без лишних вещей на поверхностях.</p></div>
-      <div class="rule"><h3>Покупки по необходимости</h3><p>Для спальни примеряем тёпло-серую кровать взамен имеющейся. Ноутбук и монитор сохраняем; стол можно оставить, заменить или обновить после сравнения полной стоимости. Своих тумбочек нет — две белые есть в списке покупок.</p></div>
-    </div>
+        <a id="gallery-original" href="assets/bedroom-layout-a-black.webp" target="_blank" rel="noopener">Открыть крупно ↗</a>
+      </figcaption>
+    </figure>
   </section>
 </div>
 
+<script>
+(() => {
+  const gallery = document.getElementById("renders");
+  const select = document.getElementById("gallery-slide");
+  const image = document.getElementById("gallery-photo");
+  const original = document.getElementById("gallery-original");
+  const count = document.getElementById("slide-count");
+  const rooms = document.getElementById("gallery-rooms");
+
+  function show(index) {
+    const total = select.options.length;
+    select.selectedIndex = (index + total) % total;
+    const slide = select.selectedOptions[0];
+    image.alt = slide.parentElement.label + " · " + slide.label;
+    image.src = original.href = slide.value;
+    count.textContent = (slide.index + 1) + " / " + total;
+    for (const button of rooms.children) {
+      button.setAttribute("aria-pressed", String(button.dataset.group === slide.parentElement.id));
+    }
+  }
+
+  for (const group of select.children) {
+    const button = document.createElement("button");
+    button.type = "button";
+    button.className = "btn";
+    button.textContent = group.label;
+    button.dataset.group = group.id;
+    button.addEventListener("click", () => show(group.firstElementChild.index));
+    rooms.append(button);
+  }
+  const step = delta => show(select.selectedIndex + delta);
+  select.addEventListener("change", () => show(select.selectedIndex));
+  document.getElementById("slide-prev").addEventListener("click", () => step(-1));
+  document.getElementById("slide-next").addEventListener("click", () => step(1));
+  gallery.addEventListener("keydown", e => {
+    if (e.target === select || e.altKey || e.ctrlKey || e.metaKey) return;
+    if (e.key === "ArrowLeft" || e.key === "ArrowRight") {
+      e.preventDefault();
+      step(e.key === "ArrowLeft" ? -1 : 1);
+    }
+  });
+
+  let touchStart;
+  image.addEventListener("touchstart", e => {
+    touchStart = e.touches.length === 1 ? e.touches[0] : null;
+  }, { passive: true });
+  image.addEventListener("touchcancel", () => { touchStart = null; });
+  image.addEventListener("touchend", e => {
+    if (!touchStart) return;
+    const dx = e.changedTouches[0].clientX - touchStart.clientX;
+    const dy = e.changedTouches[0].clientY - touchStart.clientY;
+    touchStart = null;
+    if (Math.abs(dx) > 45 && Math.abs(dx) > 1.5 * Math.abs(dy)) step(dx < 0 ? 1 : -1);
+  }, { passive: true });
+  const viewRooms = { bed: "bed", storage: "bed", bedPlan: "bed", live: "living", work: "living", kit: "kitchen", dining: "kitchen", cabinets: "kitchen", hall: "hall", entry: "hall", corridor: "hall", wc: "wc", bath: "bath", bathLeft: "bath" };
+  for (const button of document.querySelectorAll(".viewer [data-view]")) {
+    const group = document.getElementById("photos-" + viewRooms[button.dataset.view]);
+    if (group) button.addEventListener("click", () => show(group.firstElementChild.index));
+  }
+  const firstIdea = document.getElementById("photos-ideas").firstElementChild.index;
+  document.getElementById("ideas-link").addEventListener("click", () => show(firstIdea));
+  show(new URLSearchParams(location.search).get("gallery") === "ideas" ? firstIdea : select.selectedIndex);
+})();
+</script>
 <script src="vendor/three.min.js"></script>
 <script src="vendor/OrbitControls.js"></script>
 <script>
-/* ---------- Список покупок ---------- */
-const SHOP = [
-  ["Спальня", [
-    ["bed", "Тёпло-серая кровать — вариант замены", "матрас 160×200 условно", "цена неизвестна", 0, 0],
-    ["matt", "Матрас, только если подходящего нет", "по выбранной кровати", "новое", 15000, 30000],
-    ["ns", "Прикроватные тумбы ×2, белые", "≈40×40", "Авито", 1000, 3000],
-    ["ward", "Шкаф до потолка с антресолью, цвет не выбран", "200×50, высота по потолку", "готовый, ориентир", 25000, 35000],
-    ["chest", "Комод напротив кровати, орех + зеркало", "≈100×45", "Авито", 2500, 7000],
-    ["blk", "Светло-серый blackout в спальню + карниз", "по замеру окна", "новое", 3000, 6000],
-    ["tulle1", "Белый тюль в спальню", "по замеру окна", "новое", 800, 2000]
-  ]],
-  ["Гостиная и кабинет", [
-    ["sofa", "Тёпло-серый диван на высоких ножках", "≈220×95, просвет 15–18 см", "Авито", 8000, 25000],
-    ["desk", "Рабочий стол, тёмный орех — замена по выбору", "замерить", "вариант", 2000, 5000],
-    ["chair", "Офисное кресло", "—", "Авито", 3000, 8000],
-    ["tv", "Тумба под ТВ: орех, чёрные рифлёные фасады", "≈180×40 условно", "Авито + рейки на фасад", 4000, 12000],
-    ["curtains", "Тёплые серые шторы в гостиную", "по замеру окна", "цена неизвестна", 0, 0],
-    ["tulle2", "Белый тюль в гостиную", "по замеру окна", "новое", 800, 2000],
-    ["rug", "Светлый ковёр", "≈170×170", "Авито", 2000, 6000],
-    ["flamp", "Торшер, тёплый свет", "—", "Авито", 1500, 4000],
-  ]],
-  ["Кухня", [
-    ["kit", "Кухня: модули 30·60·60·60·45, верх и антресоли", "≈2,6 м, цвет не выбран", "готовая или распил", 40000, 50000],
-    ["fridge", "Холодильник свой", "≈60×60×160", "есть", 0, 0],
-    ["banq", "Банкетка с ящиками + подушка", "160×55", "цена неизвестна", 0, 0],
-    ["table", "Стол на одной ноге, орех", "120×70", "Авито", 3000, 8000],
-    ["fchair", "Складной стул", "—", "Авито", 500, 1500],
-    ["pend", "Подвес над столом, тёплый свет", "—", "Авито", 1000, 3000]
-  ]],
-  ["Прихожая и санузлы", [
-    ["hward", "Шкаф 120×50 + планка до потолка, белый", "120×50×250", "готовый, ориентир", 16000, 20000],
-    ["shoe", "Узкая обувница + 3 крючка", "≈80×25", "Авито", 1500, 4000],
-    ["mirror", "Зеркало в рост", "≈80×190", "Авито", 1000, 3000],
-    ["wash", "Стиральная машина", "60×60", "Авито", 8000, 18000],
-    ["bath", "Полки, шторка, коврики", "—", "новое", 2000, 4000]
-  ]],
-  ["Необходимый свет", [
-    ["light", "Лампочки и локальные светильники — по необходимости", "—", "новое", 3000, 6000]
-  ]],
-  ["Можно позже", [
-    ["coffee", "Журнальный столик, орех", "≈60×90", "Авито", 1000, 3000]
-  ]]
-];
-const KEY = "interior-sketch-bought";
-let bought = {};
-try { bought = JSON.parse(localStorage.getItem(KEY) || "{}") || {}; } catch (e) { bought = {}; }
-const fmt = n => n.toLocaleString("ru-RU");
-function renderShop() {
-  const tb = document.getElementById("shop");
-  let html = "";
-  SHOP.forEach(([grp, rows]) => {
-    html += `<tr class="grp"><td colspan="5">${grp}</td></tr>`;
-    rows.forEach(([id, name, size, src, lo, hi]) => {
-      const d = !!bought[id];
-      html += `<tr class="${d ? "done" : ""}"><td class="ck">${src === "есть" ? '<span aria-label="Уже есть">✓</span>' : `<input type="checkbox" id="ck-${id}" data-id="${id}" ${d ? "checked" : ""} aria-label="Куплено: ${name}">`}</td>` +
-        `<td>${name}</td><td class="sz">${size}</td><td><span class="src ${src === "новое" ? "new" : ""}">${src}</span></td>` +
-        `<td class="num">${src === "есть" ? "—" : src === "цена неизвестна" ? "уточнить" : `${fmt(lo)}–${fmt(hi)}`}</td></tr>`;
-    });
-  });
-  tb.innerHTML = html;
-  let lo = 0, hi = 0;
-  SHOP.forEach(([group, rows]) => rows.forEach(r => { if (group !== "Можно позже" && !bought[r[0]]) { lo += r[4]; hi += r[5]; } }));
-  document.getElementById("total").innerHTML = `${fmt(lo)}–${fmt(hi)} ₽<small>частичная сумма; неизвестные цены отдельно</small>`;
-}
-document.getElementById("shop").addEventListener("change", e => {
-  const id = e.target.dataset.id; if (!id) return;
-  if (e.target.checked) bought[id] = 1; else delete bought[id];
-  try { localStorage.setItem(KEY, JSON.stringify(bought)); } catch (err) {}
-  renderShop();
-});
-renderShop();
-
 /* ---------- 3D ---------- */
 (function () {
   const stage = document.getElementById("stage");
@@ -419,7 +377,7 @@ renderShop();
   }
   function tileTex() {
     const c = document.createElement("canvas"); c.width = c.height = 256; const g = c.getContext("2d");
-    g.fillStyle = "#d9dcd8"; g.fillRect(0, 0, 256, 256); g.fillStyle = "#b8bdb8";
+    g.fillStyle = "#d8d0c5"; g.fillRect(0, 0, 256, 256); g.fillStyle = "#c1b8ad";
     g.fillRect(0, 0, 256, 3); g.fillRect(0, 127, 256, 3); g.fillRect(0, 0, 3, 256); g.fillRect(127, 0, 3, 256);
     const t = new THREE.CanvasTexture(c); t.wrapS = t.wrapT = THREE.RepeatWrapping; t.repeat.set(1 / 0.6, 1 / 0.6); t.encoding = THREE.sRGBEncoding; return t;
   }
@@ -434,11 +392,19 @@ renderShop();
 
   /* Помещения, метры; x вправо, z вниз по плану; фасад с окнами при z = 0 */
   const R = {
-    P1: [0, 3.33, 0, 4.42], P2: [3.53, 6.85, 0, 5.27], P3: [7.05, 10.18, 1.42, 4.70],
+    P2: [3.53, 6.85, 0, 5.27], P3: [7.05, 10.18, 1.42, 4.70],
     P6: [0, 2.05, 4.55, 6.82], P4: [8.52, 10.18, 4.80, 6.92]
   };
-  floor(rect(...R.P1), floorWood); floor(rect(...R.P2), floorWood); floor(rect(...R.P3), floorWood);
-  floor([[2.15, 4.55], [3.33, 4.55], [3.33, 5.39], [7.05, 5.39], [7.05, 4.80], [8.42, 4.80], [8.42, 6.92], [2.15, 6.92]], floorWood);
+  const bedroomWidth = 3.33, bedroomLeft = 4.42, bedroomRight = 4.41;
+  // От щитков до санузла Б одна плоскость стены. Глубина ступени примерочная.
+  const hallBathX = 2.15, hallStepX = 5.56, hallEntryZ = 6.92, hallWallZ = 6.75;
+  // Для примерки относим разницу в 1 см к стене у входа. Диагонали пока неизвестны.
+  const entryDepth = x => bedroomLeft + (bedroomRight - bedroomLeft) * x / bedroomWidth;
+  floor([[0, 0], [bedroomWidth, 0], [bedroomWidth, bedroomRight], [0, bedroomLeft]], floorWood);
+  floor(rect(...R.P2), floorWood); floor(rect(...R.P3), floorTile);
+  floor([[hallBathX, 4.55], [3.33, 4.55], [3.33, 5.39], [5.65, 5.39],
+    [5.65, hallEntryZ], [hallStepX, hallEntryZ], [hallStepX, hallWallZ], [hallBathX, hallWallZ]], floorWood);
+  floor([[5.65, 5.39], [7.05, 5.39], [7.05, 4.80], [8.42, 4.80], [8.42, 6.92], [5.65, 6.92]], floorTile);
   floor(rect(...R.P6), floorTile); floor(rect(...R.P4), floorTile);
   box(-0.3, 10.48, -0.3, 7.17, -0.18, 0, 0xcfccc4, { cast: false });
   box(7.25, 9.95, -0.1, 1.12, -0.12, 0.0, 0xbfc4c0, { cast: false }); // лоджия?
@@ -457,12 +423,26 @@ renderShop();
     ops.slice().sort((p, q) => p.a - q.a).forEach(o => {
       if (o.a > cur) seg(cur, o.a, 0, H);
       if (o.t === "door") seg(o.a, o.b, 2.1, H);
+      else if (o.t === "balcony") {
+        seg(o.a, o.b, 2.35, H);
+        const z = (z0 + z1) / 2;
+        piece(o.a, o.b, z - 0.012, z + 0.012, 0.05, 2.35, glass, false);
+        for (const x of [o.a, o.b - 0.05]) piece(x, x + 0.05, z - 0.04, z + 0.04, 0, 2.35, C.white);
+        for (const y of [0.01, 0.84, 2.29]) piece(o.a, o.b, z - 0.04, z + 0.04, y, y + 0.06, C.white);
+        piece(o.a + .05, o.b - .05, z - .02, z + .02, .07, .84, C.white);
+        box(o.a + .06, o.a + .085, z + .039, z + .075, 1, 1.12, C.white);
+      }
       else {
         seg(o.a, o.b, 0, 0.85); seg(o.a, o.b, 2.35, H);
         const mz = (z0 + z1) / 2;
         piece(o.a, o.b, mz - 0.01, mz + 0.01, 0.85, 2.35, glass, false);
         piece(o.a, o.a + 0.06, z0 + 0.05, z1 - 0.05, 0.85, 2.35, C.white); piece(o.b - 0.06, o.b, z0 + 0.05, z1 - 0.05, 0.85, 2.35, C.white);
-        piece((o.a + o.b) / 2 - 0.03, (o.a + o.b) / 2 + 0.03, mz - 0.03, mz + 0.03, 0.85, 2.35, C.white);
+        const panes = o.panes || 2;
+        for (let i = 1; i < panes; i++) {
+          const x = o.a + (o.b - o.a) * i / panes;
+          piece(x - 0.025, x + 0.025, mz - 0.03, mz + 0.03, 0.85, 2.35, C.white);
+        }
+        if (o.panes === 3) piece(o.a, o.b, mz - 0.03, mz + 0.03, 1.06, 1.10, C.white);
         piece(o.a, o.b, mz - 0.03, mz + 0.03, 2.29, 2.35, C.white);
         box(o.a - 0.05, o.b + 0.05, z1, z1 + 0.22, 0.83, 0.87, C.white);      // подоконник
         box(o.a + 0.1, o.b - 0.1, z1 + 0.04, z1 + 0.12, 0.14, 0.66, 0xe8e8e6); // радиатор
@@ -471,20 +451,36 @@ renderShop();
     });
     if (cur < end) seg(cur, end, 0, H);
   }
-  wall(-0.3, 7.05, -0.3, 0, [{ a: 0.85, b: 2.45 }, { a: 4.4, b: 6.0 }]);   // фасад: W1, W2
+  wall(-0.3, 7.05, -0.3, 0, [{ a: 0.85, b: 2.45, panes: 3 }, { a: 4.4, b: 6.0 }]);   // фасад: W1, W2
   wall(-0.3, 0, 0, 7.17);                                                 // левая, к соседям
   wall(3.33, 3.53, 0, 5.39);                                              // P1 | P2
   wall(6.85, 7.05, 0, 5.39);                                              // P2 | кухня
-  wall(7.05, 10.48, 1.12, 1.42, [{ a: 7.45, b: 8.95 }]);                  // кухня, W3
+  wall(7.05, 10.48, 1.12, 1.42, [{ a: 7.45, b: 8.25, panes: 1 }, { a: 8.25, b: 8.95, t: "balcony" }]);                  // кухня, W3
   wall(10.18, 10.48, 1.42, 7.17);                                         // правая
   wall(7.05, 10.18, 4.70, 4.80, [{ a: 7.25, b: 8.05, t: "door" }]);       // кухня | проход, E3
-  wall(0, 3.33, 4.42, 4.55, [{ a: 2.4, b: 3.2, t: "door" }]);             // P1 | коридор, E1
+  const entryPieces = clip.length;
+  wall(0, bedroomWidth, bedroomLeft, 4.55, [{ a: 2.4, b: 3.2, t: "door" }]);
+  // Наружная грань остаётся на линии коридора. Внутренняя следует контуру пола.
+  for (const mesh of clip.slice(entryPieces)) {
+    mesh.geometry = mesh.geometry.clone();
+    const vertices = mesh.geometry.attributes.position;
+    for (let i = 0; i < vertices.count; i++) {
+      if (vertices.getZ(i) < 0) {
+        const x = mesh.position.x + vertices.getX(i) * mesh.scale.x;
+        vertices.setZ(i, (entryDepth(x) - mesh.position.z) / mesh.scale.z);
+      }
+    }
+    vertices.needsUpdate = true;
+    mesh.geometry.computeVertexNormals();
+  }             // P1 | коридор, E1
   wall(3.53, 6.85, 5.27, 5.39, [{ a: 5.85, b: 6.65, t: "door" }]);        // P2 | коридор, E2
   wall(2.05, 2.15, 4.55, 6.92, [{ a: 5.6, b: 6.3, t: "door" }]);          // санузел Б, E6
   wall(8.42, 8.52, 4.80, 6.92, [{ a: 5.55, b: 6.25, t: "door" }]);        // санузел А, E4
   wall(0, 2.15, 6.82, 6.92);
-  wall(0, 10.18, 6.92, 7.17, [{ a: 5.75, b: 6.65, t: "door" }]);          // к общему коридору, E0
-  piece(5.75, 6.65, 7.1, 7.15, 0, 2.1, 0x4a4f4c);                          // входная дверь
+  wall(0, hallBathX, hallEntryZ, 7.17);
+  wall(hallBathX, hallStepX, hallWallZ, 7.17);
+  wall(hallStepX, 10.18, hallEntryZ, 7.17, [{ a: 5.75, b: 6.65, t: "door" }]);
+  piece(5.75, 6.65, 7.1, 7.15, 0, 2.1, new THREE.MeshStandardMaterial({color:new THREE.Color(0x383938).convertSRGBToLinear()}));                          // входная дверь
 
   function applyCut(h) {
     clip.forEach(m => {
@@ -504,29 +500,47 @@ renderShop();
   const lamp = (x, z, y) => { cyl(x, z, y, y + 0.28, 0.06, C.graph); const s = cyl(x, z, y + 0.26, y + 0.44, 0.13, new THREE.MeshStandardMaterial({ color: C.linen, emissive: 0xffd9a0, emissiveIntensity: 0.35 }), 0.09); s.castShadow = false; };
   const legs = (x0, x1, z0, z1, h, c = C.graph, t = 0.04) => { [[x0, z0], [x1 - t, z0], [x0, z1 - t], [x1 - t, z1 - t]].forEach(([x, z]) => box(x, x + t, z, z + t, 0, h, c)); };
 
-  // Спальня
-  item("Тёпло-серая кровать на цельном основании — вариант замены", "матрас 160×200 условно; каркас уточнить", () => {
-    box(0, 0.06, 1.2, 2.9, 0, 1.18, warmGrey);
-    for (let z = 1.22; z < 2.86; z += 0.164) box(0.06, 0.1, z, z + 0.15, 0.36, 1.14, warmGrey);
-    box(0.06, 2.06, 1.25, 2.85, 0.05, 0.32, warmGrey);
-    box(0.1, 2.0, 1.31, 2.79, 0, 0.05, 0x4b4641);
-    box(0.08, 2.04, 1.27, 2.83, 0.32, 0.55, C.white);
-    box(0.7, 2.07, 1.24, 2.86, 0.5, 0.6, C.sage);
-    box(0.12, 0.56, 1.33, 2.0, 0.55, 0.69, C.linen); box(0.12, 0.56, 2.1, 2.77, 0.55, 0.69, C.linen);
-    box(1.55, 1.9, 1.23, 2.87, 0.6, 0.62, C.linen);
+  // Спальня, вариант А. По схеме из visual/bedroom/layouts.svg.
+  item("Кровать с подъёмником", "каркас 170 × 216 см · матрас 160 × 200 см", () => {
+    box(0.06, 2.10, 1.17, 2.77, 0, 0.07, 0x4b4641);
+    box(0, 2.16, 1.12, 2.82, 0.07, 0.38, warmGrey);
+    box(0, 0.10, 1.12, 2.82, 0.32, 1.18, warmGrey);
+    for (let i = 0; i < 10; i++) {
+      const z = 1.12 + 0.17 * i;
+      box(0.10, 0.113, z + 0.005, z + 0.165, 0.38, 1.17, warmGrey);
+    }
+    box(0.12, 2.12, 1.17, 2.77, 0.38, 0.56, C.white);
+    box(0.65, 2.145, 1.15, 2.79, 0.55, 0.60, C.linen);
+    box(1.53, 1.96, 1.15, 2.79, 0.60, 0.62, warmGrey);
+    box(0.17, 0.56, 1.25, 1.94, 0.56, 0.70, C.white);
+    box(0.17, 0.56, 2.00, 2.69, 0.56, 0.70, C.white);
   });
-  item("Белая прикроватная тумбочка", "40×40 см условно", () => { box(0.02, 0.44, 0.74, 1.14, 0, 0.5, C.white); lamp(0.22, 0.94, 0.5); });
-  item("Белая прикроватная тумбочка", "40×40 см условно", () => { box(0.02, 0.44, 2.96, 3.36, 0, 0.5, C.white); lamp(0.22, 3.16, 0.5); });
-  item("Шкаф до потолка, светлый тёплый серый, латунные ручки", "200×50 см, высота по потолку · цвет не выбран", () => {
-    box(0.0, 2.0, 3.92, 4.42, 0, H - 0.005, lightGrey);
-    [0.5, 1.0, 1.5].forEach(x => box(x - 0.004, x + 0.004, 3.912, 3.92, 0.04, H - 0.04, 0xcfcac2));
-    box(0.0, 2.0, 3.91, 3.92, 2.28, 2.288, 0xcfcac2);
-    [0.47, 0.53, 1.47, 1.53].forEach(x => box(x - 0.007, x + 0.007, 3.895, 3.912, 0.8, 1.75, brass));
+  for (const z of [0.77, 2.82]) {
+    item("Белая прикроватная тумбочка", "35 × 36 см", () => {
+      box(0, 0.36, z, z + 0.35, 0, 0.50, C.white);
+      lamp(0.18, z + 0.175, 0.50);
+    });
+  }
+  const closetBack = entryDepth(2.05), closetFront = closetBack - 0.50;
+  item("Светлый шкаф у входа", "200 × 50 см · пять створок по 40 см", () => {
+    box(0.05, 2.05, closetFront + 0.018, closetBack, 0, H, C.white);
+    for (let i = 0; i < 5; i++) {
+      const x = 0.05 + i * 0.40;
+      box(x + 0.002, x + 0.398, closetFront, closetFront + 0.018, 0.04, 2.08, C.white);
+      box(x + 0.002, x + 0.398, closetFront, closetFront + 0.018, 2.085, 2.60, C.white);
+    }
   });
-  item("Комод напротив кровати, орех", "100×45 см условно", () => {
-    box(2.88, 3.33, 1.3, 2.3, 0.06, 0.8, accentWood);
-    [0.3, 0.55].forEach(y => box(2.874, 2.88, 1.33, 2.27, y - 0.004, y + 0.004, walnut));
-    box(3.31, 3.33, 1.45, 2.15, 1.05, 1.85, mirror);
+  const matteBlack = new THREE.MeshStandardMaterial({color: new THREE.Color(0x262524).convertSRGBToLinear(), roughness: 0.8});
+  item("Свой чёрный комод", "примерка 100 × 45 × 80 см", () => {
+    box(2.90, 3.33, 1.45, 2.45, 0.03, 0.80, matteBlack);
+    for (let i = 0; i < 3; i++) {
+      const y = 0.045 + i * 0.25;
+      box(2.88, 2.90, 1.454, 2.446, y, y + 0.244, matteBlack);
+    }
+  });
+  item("Зеркало в тонкой ореховой раме", "размер для примерки", () => {
+    box(3.300, 3.33, 1.58, 2.32, 1.04, 1.98, accentWood);
+    box(3.297, 3.30, 1.60, 2.30, 1.06, 1.96, mirror);
   });
   item("Светло-серый blackout в спальне", "окно ≈1,6 м условно", () => {
     box(0.55, 0.98, 0.02, 0.1, 0.05, 2.55, curtainGrey); box(2.32, 2.75, 0.02, 0.1, 0.05, 2.55, curtainGrey);
@@ -575,93 +589,305 @@ renderShop();
     const s = cyl(3.8, 2.48, 1.4, 1.68, 0.2, new THREE.MeshStandardMaterial({ color: C.linen, emissive: 0xffd9a0, emissiveIntensity: 0.4 }), 0.16); s.castShadow = false;
   });
 
-  // Кухня (К16, К6, К7): u — от стены с гостиной, v — от окна, в см; высоты в м
+  // Кухня. От окна к входу вдоль правой стены, размеры модулей в см.
   const kx = u => 7.05 + u / 100, kz = v => 1.42 + v / 100;
   const kb = (u0, u1, v0, v1, y0, y1, m) => box(kx(u0), kx(u1), kz(v0), kz(v1), y0, y1, m);
-  const lin = c => new THREE.Color(c).convertSRGBToLinear();
-  const KIT = {
-    milk: { low: lin(0xf0ece5), plinth: lin(0xd8d2c8), top: lin(0x8b5e3c) },
-    choc: { low: lin(0x4b3429), plinth: lin(0x38261e), top: lin(0xe4dfd6) }
+  const finish = (hex, roughness = .72, metalness = 0) => new THREE.MeshStandardMaterial({
+    color: new THREE.Color(hex).convertSRGBToLinear(), roughness, metalness
+  });
+  const steel = finish(0xb7bbba, .30, .36), hob = finish(0x242422, .18);
+  const ring = finish(0x686968), cream = finish(0xece5da), ceramic = finish(0xfcfaf6, .24);
+  const fabric = finish(0xc1b1a0, 1), cushion = finish(0xd1c3b5, .98), grout = finish(0xbcb6ac);
+  function pipe(points, radius, material) {
+    const curve = new THREE.CatmullRomCurve3(points.map(p => new THREE.Vector3(...p)));
+    const mesh = new THREE.Mesh(new THREE.TubeGeometry(curve, Math.max(12, points.length * 5), radius, 10, false), material);
+    mesh.castShadow = true; parentNow.add(mesh); return mesh;
+  }
+  function loopRing(x, y, z, radius, thickness, material) {
+    const mesh = new THREE.Mesh(new THREE.TorusGeometry(radius, thickness, 8, 48), material);
+    mesh.rotation.x = Math.PI / 2; mesh.position.set(x, y, z); parentNow.add(mesh); return mesh;
+  }
+  const palettes = {
+    milk: [0xeee6db, 0x866246], choc: [0x554035, 0xe1d9ca], sage: [0x99a38e, 0xd8c8ac]
   };
-  const kLow = new THREE.MeshStandardMaterial({ roughness: 0.55 }), kPlinth = new THREE.MeshStandardMaterial({ roughness: 0.7 });
-  const kTop = new THREE.MeshStandardMaterial({ roughness: 0.6 }), kUp = new THREE.MeshStandardMaterial({ color: lin(0xf0ece5), roughness: 0.55 });
-  const kitColor = n => { kLow.color.copy(KIT[n].low); kPlinth.color.copy(KIT[n].plinth); kTop.color.copy(KIT[n].top); };
-  kitColor("milk");
-  const g = 0.25;
-  item("Кухня из стандартных модулей — модель и цвет не выбраны", "низ 30 · плита 60 · ящики 60 · мойка 60 · 45 · верх 72 до 2,22 + антресоли", () => {
-    kb(256, 313, 0, 255, 0, 0.1, kPlinth);
-    [[0, 30], [150, 180], [180, 210], [210, 255]].forEach(([a, b]) => kb(252, 313, a + g, b - g, 0.1, 0.86, kLow));
-    [[0.1, 0.42], [0.42, 0.68], [0.68, 0.86]].forEach(([y0, y1]) => kb(252, 313, 90 + g, 150 - g, y0 + 0.0025, y1 - 0.0025, kLow));
-    kb(252, 313, 30.5, 89.5, 0, 0.85, 0x2f2f30);                 // плита с духовкой
-    kb(251.4, 252, 35, 85, 0.16, 0.68, 0x46494d);
-    kb(249.5, 251.4, 40, 80, 0.74, 0.76, 0xa9adb0);
-    kb(252, 313, 30.5, 89.5, 0.85, 0.89, 0x111111);
-    kb(250, 313, 0, 30, 0.86, 0.9, kTop); kb(250, 313, 90, 255, 0.86, 0.9, kTop);
-    kb(262, 303, 158, 202, 0.896, 0.903, 0xb9bec0);              // мойка
-    cyl(kx(307), kz(180), 0.9, 1.16, 0.014, 0x9aa1a4); kb(294, 307, 179, 181, 1.13, 1.16, 0x9aa1a4);
-    [[0, 30, 1.5], [30, 90, 1.6], [150, 210, 1.5], [210, 255, 1.5]].forEach(([a, b, y0]) => kb(278, 313, a + g, b - g, y0, 2.2175, kUp));
-    kb(278, 313, 90 + g, 150 - g, 1.5, 1.8775, kUp); kb(278, 313, 90 + g, 150 - g, 1.8825, 2.2175, kUp);
-    kb(280, 313, 31, 89, 1.54, 1.6, 0xb9bcbe);                   // вытяжка
-    [[0, 30], [30, 90], [90, 150], [150, 210], [210, 255]].forEach(([a, b]) => kb(278, 313, a + g, b - g, 2.2225, 2.66, kUp));
-    kb(250, 313, 255, 257, 0, 2.05, kUp);                         // ниша холодильника
-    kb(250, 313, 255 + g, 291.5 - g, 2.05, 2.66, kUp); kb(250, 313, 291.5 + g, 328, 2.05, 2.66, kUp);
+  const kLow = finish(palettes.milk[0]), kTop = finish(palettes.milk[1], .56);
+  document.getElementById("t-kitcol").addEventListener("change", e => {
+    const [low, top] = palettes[e.target.value];
+    kLow.color.setHex(low).convertSRGBToLinear(); kTop.color.setHex(top).convertSRGBToLinear();
   });
-  item("Холодильник свой", "≈60×60×160 см", () => { kb(253, 313, 262, 322, 0, 1.6, 0xfdfdfc); kb(251.5, 253, 314, 316, 0.76, 1.52, 0x9fa6a8); });
-  const banq = lin(0xb9aea2), cush = lin(0xcbc1b6);
-  item("Банкетка с ящиками под сиденьем", "160×55 см, сиденье 47 см", () => {
-    kb(0, 55, 80, 240, 0, 0.4, new THREE.MeshStandardMaterial({ color: banq, roughness: 0.9 }));
-    kb(12, 55, 80.5, 239.5, 0.4, 0.47, new THREE.MeshStandardMaterial({ color: cush, roughness: 1 }));
-    kb(0, 13, 80.5, 239.5, 0.4, 0.9, new THREE.MeshStandardMaterial({ color: banq, roughness: 1 }));
+  item("Свой холодильник у окна", "≈60 × 60 × 160 см · ниша 70 см", () => {
+    kb(252, 312, 4, 64, .015, 1.60, ceramic);
+    kb(250.8, 252, 4.3, 63.7, .07, .56, ceramic);
+    kb(250.8, 252, 4.3, 63.7, .57, 1.59, ceramic);
+    kb(249.4, 251, 7.3, 9.2, .62, 1.01, steel);
+    kb(250, 313, 68.6, 70, 0, H - .01, cream);
+    kb(251, 313, 1, 68.5, 2.05, H - .01, cream);
   });
-  item("Стол на одной ноге, орех", "120×70 см", () => {
-    kb(55, 125, 100, 220, 0.72, 0.75, accentWood);
-    cyl(kx(90), kz(160), 0.03, 0.72, 0.04, C.black); cyl(kx(90), kz(160), 0, 0.03, 0.22, C.black);
+  const shadowPull=finish(0x867b6c,.48);
+  item("Нижние модули кухни", "30 + 60 + 60 + 45 + 60 см от холодильника к мойке", () => {
+    kb(256, 313, 70, 325, .01, .10, kLow);
+    kb(254, 313, 70, 265, .10, .857, kLow);
+    kb(254, 313, 265, 325, .10, .72, kLow);
+    for (const [a, b] of [[70, 100], [100, 160], [220, 265], [265, 325]]) kb(252, 254, a + .2, b - .2, .104, .851, kLow);
+    for (const [a,b] of [[.104,.39],[.395,.65],[.655,.851]]) kb(252, 254, 160.2, 219.8, a, b, kLow);
+    for (const v of [85,130,190,243,295]) kb(251.1,252.0,v-7,v+7,.827,.838,shadowPull);
+    for (const y of [.36,.62]) kb(251.1,252.0,183,197,y,y+.011,shadowPull);
+    kb(250, 313, 70, 273, .862, .90, kTop);
+    kb(250, 313, 316, 325, .862, .90, kTop);
+    kb(250, 260, 273, 316, .862, .90, kTop);
+    kb(301, 313, 273, 316, .862, .90, kTop);
   });
-  item("Складной стул", "", () => {
-    kb(134, 171, 142, 178, 0.44, 0.47, C.oak); kb(168, 171, 142, 178, 0.47, 0.86, C.oak);
-    legs(kx(135), kx(171), kz(143), kz(177), 0.44, C.black, 0.02);
+  item("Встроенная варочная панель", "60 см · под ней съёмный фасад, место под духовку", () => {
+    kb(255, 306, 102, 158, .900, .911, hob);
+    for (const [u, v, r] of [[267,116,.082],[291,116,.095],[267,143,.10],[291,143,.073]]) {
+      loopRing(kx(u), .912, kz(v), r, .0028, ring);
+    }
   });
-  item("Подвес над столом", "низ ≈1,40 м, тёплый свет", () => { cyl(kx(90), kz(160), 1.55, H, 0.006, C.black); const s = cyl(kx(90), kz(160), 1.38, 1.56, 0.2, new THREE.MeshStandardMaterial({ color: C.graph, emissive: 0xffd9a0, emissiveIntensity: 0.15 }), 0.05); s.castShadow = false; });
-  const kitButton = document.getElementById("t-kitcol");
-  kitButton.addEventListener("click", () => {
-    const choc = kitButton.getAttribute("aria-pressed") !== "true";
-    kitColor(choc ? "choc" : "milk");
-    kitButton.setAttribute("aria-pressed", String(choc));
-    kitButton.textContent = choc ? "Кухня молочная" : "Кухня в шоколаде";
-    document.getElementById("tip").hidden = true;
+  item("Мойка у входа", "крайний модуль 60 см", () => {
+    const basinSteel = finish(0x959b9b,.32,.32);
+    kb(259, 261, 272, 317, .755, .905, steel); kb(300, 302, 272, 317, .755, .905, steel);
+    kb(261, 300, 272, 274, .755, .905, steel); kb(261, 300, 315, 317, .755, .905, steel);
+    kb(261, 300, 274, 315, .748, .755, basinSteel);
+    cyl(kx(280), kz(295), .755, .758, .024, steel);
+    pipe([[kx(306),.90,kz(295)], [kx(306),1.13,kz(295)], [kx(302),1.23,kz(295)], [kx(290),1.23,kz(295)], [kx(287),1.14,kz(295)]],.012,steel);
+  });
+  item("Навесные шкафы и встроенная вытяжка", "молочный верх", () => {
+    kb(311, 313, 70, 325, .9, 1.50, cream);
+    for (const [a,b] of [[70,100],[100,160],[160,220],[220,265],[265,325]]) {
+      kb(278, 313, a + .2, b - .2, a === 100 ? 1.62 : 1.5, 2.216, cream);
+      kb(278, 313, a + .2, b - .2, 2.22, H - .01, cream);
+    }
+    kb(280, 311, 102, 158, 1.59, 1.62, steel);
+  });
+  item("Две двойные розетки над столешницей", "расположение примерное, до обмера", () => {
+    for (const v of [178, 244]) {
+      kb(309.6, 311, v - 7, v + 7, 1.10, 1.18, ceramic);
+      for (const t of [v - 3.5, v + 3.5]) kb(309.4, 309.6, t - 2.2, t + 2.2, 1.12, 1.16, grout);
+    }
+  });
+  item("Банкетка из двух коробов со съёмными подушками", "примерка 160 × 55 см · высота сиденья 47 см", () => {
+    for (const v of [80, 160]) {
+      kb(0, 54, v + .3, v + 79.7, .035, .393, cream);
+      kb(53.7, 55, v + .7, v + 79.3, .07, .38, cream);
+      kb(5, 55, v + .5, v + 79.5, .395, .47, cushion);
+      const back = kb(1.5, 10, v + .5, v + 79.5, .465, .89, fabric); back.rotation.z = .06;
+    }
+  });
+  item("Стол под орех на центральной опоре", "120 × 70 см", () => {
+    kb(55, 125, 100, 220, .72, .75, accentWood);
+    kb(86, 94, 151, 169, .025, .72, fluteBlack); kb(68, 112, 136, 184, .005, .025, fluteBlack);
+  });
+  item("Стул напротив банкетки", "", () => {
+    kb(130, 167, 142, 178, .44, .48, cushion); kb(164, 168, 142, 178, .47, .85, fabric);
+    legs(kx(132), kx(167), kz(144), kz(176), .44, accentWood, .025);
+  });
+  item("Открытая кухонная дверь", "створка распахивается к стене банкетки", () => {
+    kb(20, 23.5, 248, 328, .017, 2.045, finish(0xc5b399));
+    for (const y of [.41,.86,1.31,1.75]) kb(23.5,23.7,255,321,y,y+.095,cream);
+    kb(23.7, 27, 254, 264, .98, .996, steel);
+  });
+  item("Рамки на стене банкетки", "два уровня по видео · привязки до обмера", () => {
+    for (const [v,y] of [[65,.29],[68,1.0]]) kb(.05,1.1,v-4,v+4,y,y+.08,ceramic);
+  });
+  item("Подвес над столом", "низ ≈1,40 м", () => {
+    cyl(kx(90), kz(160), 1.55, H, .006, fluteBlack);
+    cyl(kx(90), kz(160), 1.38, 1.56, .19, cream, .06);
   });
 
-  // Прихожая: шкаф 120×50 в расширении справа от входа, до двери ≈45 см, коридор свободен
-  const hallWhite = 0xf3f1ec, seam = 0xdcd8d0;
-  item("Шкаф 120×50, белый, с планкой до потолка", "120×50×250 см + планка · модель не выбрана", () => {
-    box(7.20, 8.40, 6.42, 6.92, 0, 2.5, hallWhite);
-    box(7.20, 8.40, 6.42, 6.44, 2.5, H - 0.005, hallWhite);
-    [7.60, 8.00].forEach(x => box(x - 0.003, x + 0.003, 6.416, 6.42, 0.04, 2.46, seam));
-    box(7.20, 8.40, 6.416, 6.42, 2.047, 2.053, seam);
-    box(7.20, 8.40, 6.436, 6.44, 2.497, 2.503, seam);
+  // Вход. Скамья ближе к двери, зеркало на узкой боковине шкафа обращено к скамье.
+  const hallFront = finish(0xd5cabc), doorFrame = finish(0x514b42), shadowGap = finish(0x9c9388);
+  let sideMirror;
+  item("Двухстворчатый шкаф справа от входа", "примерка 100 × 50 см", () => {
+    box(7.37, 8.37, 6.43, 6.92, .004, H, shadowGap);
+    for (const x of [7.37, 7.87]) {
+      box(x + .002, x + .498, 6.416, 6.44, .055, 2.117, hallFront);
+      box(x + .002, x + .498, 6.416, 6.44, 2.121, H - .006, hallFront);
+    }
+    for (const x of [7.83, 7.91]) box(x, x + .013, 6.39, 6.418, .95, 1.19, fluteBlack);
+    box(7.367, 7.38, 6.419, 6.918, 0, H, hallFront);
   });
-  item("Узкая обувница и 3 крючка", "80×25 см", () => {
-    box(4.85, 5.65, 6.67, 6.92, 0.1, 1.0, hallWhite); box(4.87, 5.63, 6.69, 6.92, 0, 0.1, seam);
-    box(4.85, 5.65, 6.666, 6.67, 0.547, 0.553, seam);
-    [5.0, 5.25, 5.5].forEach(x => box(x - 0.01, x + 0.01, 6.86, 6.92, 1.68, 1.72, brass));
+  item("Зеркало на торце шкафа со стороны скамьи", "ширина около 44 см при глубине шкафа 50 см", () => {
+    box(7.356, 7.369, 6.44, 6.90, .48, 2.10, accentWood);
+    sideMirror = box(7.351, 7.357, 6.45, 6.89, .49, 2.09, mirror);
   });
-  item("Зеркало в рост", "≈80×190 см", () => {
-    box(3.68, 4.52, 6.905, 6.92, 0.08, 2.02, accentWood);
-    box(3.7, 4.5, 6.9, 6.905, 0.1, 2.0, mirror);
+  item("Обувная тумба-скамья и рейки с двумя крючками", "примерка 60 × 36 см", () => {
+    box(6.77, 7.37, 6.89, 6.92, .43, 2.12, accentWood);
+    for (let x = 6.779; x < 7.354; x += .033) box(x, x + .02, 6.866, 6.897, .43, 2.12, walnut);
+    box(6.77, 7.37, 6.56, 6.919, .025, .39, hallFront);
+    box(6.777, 7.363, 6.551, 6.56, .065, .378, hallFront);
+    box(6.774, 7.366, 6.554, 6.90, .39, .46, cushion);
+    for (const x of [6.92, 7.20]) pipe([[x,1.66,6.872],[x,1.62,6.838],[x,1.63,6.807],[x,1.66,6.804]], .012, fluteBlack);
+    box(6.77, 7.369, 6.42, 6.92, 2.12, H - .005, hallFront);
   });
-  item("Коврик", "", () => box(5.8, 6.6, 6.3, 6.88, 0, 0.012, C.graph, { cast: false }));
+  item("Два щитка и домофон", "на стене от входа до санузла Б · привязки примерные", () => {
+    for (const [a,b] of [[1.45,1.83],[.99,1.35]]) {
+      box(4.97, 5.42, hallWallZ-.022, hallWallZ+.002, a, b, grout);
+      box(4.98, 5.41, hallWallZ-.028, hallWallZ-.020, a+.012, b-.012, ceramic);
+    }
+    box(5.29, 5.40, hallWallZ-.049, hallWallZ+.001, .64, .89, ceramic);
+  });
+  item("Выключатель у входа", "положение примерное · оставить доступ возле скамьи", () => box(6.67,6.75,6.90,6.924,.98,1.06,ceramic));
+  item("Входная дверь", "", () => {
+    for (const x of [5.75,6.615]) piece(x,x+.035,6.93,7.11,0,2.10,doorFrame);
+    piece(5.75,6.65,6.93,7.11,2.065,2.10,doorFrame); box(5.83,5.93,7.047,7.103,.97,.985,steel);
+  });
+  item("Придверный коврик", "", () => box(5.81,6.60,6.34,6.84,.005,.014,fabric,{cast:false}));
 
-  // Санузлы, условно
-  item("Ванна (условно)", "170×70 см", () => { box(0.02, 1.72, 4.57, 5.27, 0, 0.58, C.white); box(0.1, 1.64, 4.65, 5.19, 0.5, 0.585, 0xdfe7ea); });
-  item("Унитаз (условно)", "", () => { box(0.0, 0.2, 5.85, 6.25, 0.4, 0.8, C.white); cyl(0.45, 6.05, 0, 0.42, 0.19, C.white); });
-  item("Раковина с тумбой", "50 см", () => { box(0.78, 1.22, 6.42, 6.82, 0.2, 0.8, C.oak); box(0.75, 1.25, 6.4, 6.82, 0.8, 0.86, C.white); box(0.8, 1.2, 6.8, 6.82, 1.05, 1.65, mirror); });
-  item("Стиральная машина", "60×60 см", () => {
-    box(1.4, 2.0, 6.22, 6.82, 0, 0.85, 0xf0f0f0);
-    const r = new THREE.Mesh(new THREE.TorusGeometry(0.17, 0.025, 10, 32), mat(0x9aa0a2)); r.position.set(1.7, 0.45, 6.215); parentNow.add(r);
+  // В обоих санузлах локальная ось X идёт вправо, если смотреть от двери, Z — от дальней стены ко входу.
+  const wcRoom = { x: 10.18, z: 4.80, turn: -Math.PI/2, width: 2.12, depth: 1.66, door: [.75, 1.45] };
+  const bathRoom = { x: 0, z: 6.82, turn: Math.PI/2, width: 2.27, depth: 2.05, door: [.52, 1.22] };
+  function bathItem(room, label, draw) {
+    const group = item(label, "по кадрам обхода · привязки примерные", draw);
+    group.position.set(room.x, 0, room.z); group.rotation.y = room.turn;
+  }
+  // Наружная поверхность, край и углубление сведены в один профиль.
+  function vessel(x,z,profile,exponent) {
+    const positions = [], indices = [], n = 64;
+    for (const [y,rx,rz] of profile) {
+      for (let i=0; i<n; i++) {
+        const t = 2*Math.PI*i/n, a = Math.cos(t), b = Math.sin(t);
+        positions.push(x + rx*Math.sign(a)*Math.pow(Math.abs(a),exponent),y,z + rz*Math.sign(b)*Math.pow(Math.abs(b),exponent));
+      }
+    }
+    for (let row=0; row<profile.length-1; row++) for (let i=0; i<n; i++) {
+      const a = row*n+i, b = row*n+(i+1)%n;
+      indices.push(a,a+n,b, b,a+n,b+n);
+    }
+    const geo = new THREE.BufferGeometry(); geo.setAttribute("position",new THREE.Float32BufferAttribute(positions,3));
+    geo.setIndex(indices); geo.computeVertexNormals();
+    const mesh = new THREE.Mesh(geo,ceramic); mesh.castShadow = mesh.receiveShadow = true; parentNow.add(mesh);
+  }
+  function groupAt(x,z,rotation,draw) {
+    const previous = parentNow, group = new THREE.Group();
+    group.position.set(x,0,z); group.rotation.y = rotation; previous.add(group);
+    parentNow = group; draw(); parentNow = previous;
+  }
+  function toilet(x,z,turn) {
+    groupAt(x,z,turn,() => {
+      cyl(0,.29,.008,.24,.119,ceramic,.097).scale.z = 1.42;
+      vessel(0,.40,[[.145,.085,.12],[.24,.138,.183],[.352,.177,.223],[.397,.174,.214],[.40,.136,.168],[.355,.128,.159],[.252,.045,.055],[.25,.001,.001]],.91);
+      const seat = loopRing(0,.409,.40,.155,.017,ceramic); seat.scale.y=1.27;
+      cyl(0,.40,.411,.425,.168,ceramic,.165).scale.z=1.23;
+      box(-.161,.161,.033,.191,.37,.736,ceramic);
+      box(-.17,.17,.026,.197,.736,.754,ceramic);
+      cyl(0,.11,.754,.759,.016,steel);
+    });
+  }
+  function basin(x,z,turn,pedestal) {
+    groupAt(x,z,turn,() => {
+      if (pedestal) {
+        cyl(0,.15,.008,.70,.093,ceramic,.068).scale.z=1.12;
+      } else {
+        pipe([[0,.72,.18],[0,.56,.18],[0,.52,.16],[0,.52,.04]],.019,steel);
+      }
+      const w = pedestal ? .28 : .215, d = pedestal ? .205 : .158;
+      vessel(0,d,[[.70,w*.35,d*.36],[.76,w*.82,d*.8],[.826,w,d],[.844,w*.98,d*.98],[.843,w*.79,d*.71],[.79,w*.65,d*.60],[.76,.026,.03],[.758,.001,.001]],.81);
+      cyl(0,d,.761,.765,.019,steel);
+      pipe([[0,.835,.055],[0,.947,.055],[0,.96,.09],[0,.939,.136]],.012,steel);
+    });
+  }
+  function hatch(x0,x1,z0,z1,y0,y1) {
+    box(x0,x1,z0,z1,y0,y1,grout);
+    if (x1-x0 > z1-z0) box(x0+.009,x1-.009,z0,z1+.003,y0+.009,y1-.009,cream);
+    else box(x0-.003,x1+.003,z0+.009,z1-.009,y0+.009,y1-.009,cream);
+  }
+
+  const tileCanvas = document.createElement("canvas"); tileCanvas.width=256; tileCanvas.height=128;
+  const wallTileCtx = tileCanvas.getContext("2d");
+  wallTileCtx.fillStyle="#e8e3db"; wallTileCtx.fillRect(0,0,256,128);
+  const fleck = rnd(39);
+  for (let i=0;i<750;i++) {
+    const x=fleck()*256,y=fleck()*128;
+    wallTileCtx.fillStyle=i%2?"rgba(134,128,115,.034)":"rgba(255,255,255,.16)";
+    wallTileCtx.beginPath(); wallTileCtx.ellipse(x,y,2+fleck()*5,1+fleck()*2,-.5,0,Math.PI*2); wallTileCtx.fill();
+  }
+  wallTileCtx.fillStyle="#c9c4bd"; wallTileCtx.fillRect(0,0,256,2); wallTileCtx.fillRect(0,0,2,128);
+  function tilePanel(x0,x1,z0,z1,y0,y1) {
+    const tex = new THREE.CanvasTexture(tileCanvas); tex.encoding=THREE.sRGBEncoding; tex.wrapS=tex.wrapT=THREE.RepeatWrapping;
+    tex.repeat.set(Math.max(x1-x0,z1-z0)/.60,(y1-y0)/.30);
+    const panel = piece(x0,x1,z0,z1,y0,y1,new THREE.MeshStandardMaterial({map:tex,roughness:.5}),false);
+    return panel;
+  }
+  for (const room of [wcRoom,bathRoom]) {
+    bathItem(room,"Светлая настенная плитка",() => {
+      const w=room.width, d=room.depth, [a,b]=room.door;
+      tilePanel(.002,w-.002,.001,.012,0,H); tilePanel(.001,.012,.012,d,0,H);
+      tilePanel(w-.012,w-.001,.012,d,0,H);
+      tilePanel(.012,a,d-.012,d,0,H); tilePanel(b,w-.012,d-.012,d,0,H);
+      tilePanel(a,b,d-.012,d,2.1,H);
+      const light=new THREE.PointLight(0xfff4df,.50,3.7,1.2);
+      light.position.set(w*.49,2.40,d*.55); parentNow.add(light);
+    });
+  }
+  bathItem(wcRoom,"Санузел А · унитаз у дальней стены",() => toilet(.78,.035,0));
+  bathItem(wcRoom,"Санузел А · подвесной рукомойник справа от унитаза",() => basin(1.62,.015,0,false));
+  bathItem(wcRoom,"Два ревизионных люка",() => {
+    hatch(.43,.96,.013,.026,1.17,1.68);
+    hatch(2.086,2.106,.78,1.43,.16,.63);
   });
-  item("Душ (условно)", "90×90 см", () => { box(9.28, 10.18, 4.8, 5.7, 0, 0.06, C.white); box(9.28, 9.3, 4.8, 5.7, 0.06, 2.0, glass, { cast: false }); });
-  item("Унитаз (условно)", "", () => { box(9.98, 10.18, 6.0, 6.4, 0.4, 0.8, C.white); cyl(9.73, 6.2, 0, 0.42, 0.19, C.white); });
-  item("Раковина (условно)", "", () => box(8.65, 9.15, 6.5, 6.92, 0.8, 0.86, C.white));
+
+  bathItem(bathRoom,"Ванна поперёк дальней стены",() => {
+    // Сплошной передний экран и бортики вокруг открытой чаши.
+    const length=1.71, inset=.105, left=.014, right=left+length, mid=(left+right)/2;
+    box(left,right,.674,.691,.014,.550,grout);
+    for (const [start,end] of [[left+.009,mid-.003],[mid+.003,right-.009]]) box(start,end,.691,.698,.051,.547,ceramic);
+    box(left,left+inset,.013,.689,.53,.565,ceramic); box(right-inset,right,.013,.689,.53,.565,ceramic);
+    box(left+inset,right-inset,.013,.081,.53,.565,ceramic); box(left+inset,right-inset,.616,.689,.53,.565,ceramic);
+    vessel(mid,.353,[[.548,length/2-.02,.337],[.564,length/2-.046,.32],[.566,length/2-.080,.294],[.535,length/2-.103,.275],[.20,.64,.202],[.155,.49,.153],[.154,.001,.001]],.28);
+    cyl(.38,.35,.158,.162,.021,steel);
+    tilePanel(right,2.253,.43,.45,0,H);
+    tilePanel(right-.012,right,.013,.45,0,H);
+    for (const x of [1.89,2.04]) box(x-.018,x+.018,.451,.475,.17,.204,steel);
+  });
+  bathItem(bathRoom,"Душ и смеситель в левом конце ванны",() => {
+    for (const z of [.28,.44]) box(.016,.086,z-.02,z+.02,.74,.78,steel);
+    pipe([[.09,.76,.26],[.09,.76,.47]],.022,steel);
+    pipe([[.09,.76,.36],[.20,.75,.36],[.21,.72,.36]],.014,steel);
+    pipe([[.09,.74,.28],[.14,.51,.25],[.15,.49,.16],[.11,.92,.14],[.13,1.59,.18]],.009,steel);
+    pipe([[.08,1.03,.18],[.08,1.82,.18]],.011,steel);
+    pipe([[.13,1.58,.18],[.14,1.70,.18],[.20,1.77,.18]],.022,steel);
+  });
+  bathItem(bathRoom,"Унитаз слева у входа и люк над бачком",() => {
+    box(.013,.126,1.33,2.034,0,1.80,cream);
+    toilet(.13,1.64,Math.PI/2);
+    hatch(.126,.139,1.45,1.85,1.01,1.53);
+  });
+  bathItem(bathRoom,"Раковина на пьедестале и светильник",() => {
+    basin(.018,1.015,Math.PI/2,true);
+    const globe = new THREE.Mesh(new THREE.SphereGeometry(.085,24,16),ceramic);
+    globe.position.set(.06,1.83,1.01); parentNow.add(globe);
+  });
+  bathItem(bathRoom,"Полотенцесушитель и радиатор на правой стене",() => {
+    const x=2.19;
+    const path=[[1.62,1.65],[1.03,1.65],[.94,1.59],[.95,1.51],[1.03,1.47],[1.54,1.47],[1.62,1.42],[1.62,1.34],[1.54,1.30],[1.02,1.30],[.94,1.24],[.95,1.16],[1.03,1.12],[1.62,1.12]];
+    pipe(path.map(([z,y]) => [x,y,z]),.019,steel);
+    for (const y of [1.12,1.65]) box(x,2.257,1.60,1.64,y-.019,y+.019,steel);
+    for (let i=0;i<7;i++) {
+      const z=.97+i*.085;
+      box(2.132,2.228,z,z+.073,.15,.67,ceramic);
+    }
+    for (const y of [.19,.61]) box(2.17,2.24,.95,1.56,y,y+.025,ceramic);
+  });
+
+  const ceilings = [];
+  const ceilingMat=finish(0xf7f4ef);
+  for (const [x0,x1,z0,z1] of [R.P4,R.P6,R.P3,[hallBathX,hallStepX,5.39,hallWallZ],[hallStepX,8.43,5.39,hallEntryZ],[7.05,8.43,4.80,5.39],[hallBathX,3.33,4.55,5.39]]) {
+    ceilings.push(box(x0,x1,z0,z1,H,H+.045,ceilingMat));
+  }
+  for (const [x,z,intensity] of [[7.25,5.99,.84],[5.13,6.3,.54],[8.45,3.35,.78]]) {
+    const light = new THREE.PointLight(0xfff3df,intensity,4.5,1.1);
+    light.position.set(x,2.49,z); scene.add(light);
+  }
+  const wcDoor = item("Дверь санузла А", "", () => {
+    const veneer=finish(0xc5b399);
+    box(8.467,8.501,5.565,6.235,.015,2.065,veneer);
+    box(8.429,8.466,6.08,6.19,.97,.987,steel);
+  });
+  const reflection = new THREE.WebGLCubeRenderTarget(128);
+  const mirrorCamera = new THREE.CubeCamera(.03,20,reflection);
+  mirrorCamera.position.set(7.34,1.30,6.65);
+  sideMirror.visible=false; mirrorCamera.update(renderer,scene); sideMirror.visible=true;
+  mirror.envMap=reflection.texture; mirror.color.setHex(0xf0f3f2); mirror.metalness=.94; mirror.roughness=.07; mirror.needsUpdate=true;
 
   /* Подписи комнат */
   const labelsEl = document.getElementById("labels");
@@ -671,42 +897,60 @@ renderShop();
     el.innerHTML = `<b>${name}</b>${sub ? `<span>${sub}</span>` : ""}`; labelsEl.appendChild(el);
     labels.push({ p: new THREE.Vector3(x, 0.15, z), el, planOnly });
   }
-  label(1.66, 1.75, "Спальня", "3,33 × 4,42 · ≈14,7 м²");
+  label(1.66, 1.75, "Спальня", "3,33 × 4,41–4,42 м");
   label(5.0, 1.9, "Гостиная + кабинет", "3,32 × 5,27 · ≈17,5 м²");
   label(8.6, 3.4, "Кухня", "3,13 × 3,28 · ≈10,3 м²");
-  label(4.6, 5.95, "Прихожая", "ширина 1,53");
-  label(1.0, 5.7, "Санузел Б", "2,27? × ?", false, true);
-  label(9.3, 6.0, "Санузел А", "размеры ?", false, true);
+  label(4.6, 5.95, "Прихожая", "≈1,36 м у щитков");
+  label(1.0, 5.7, "Санузел Б", "≈2,05 × 2,27 м", false, true);
+  label(9.3, 6.0, "Санузел А", "≈1,66 × 2,12 м", false, true);
   label(8.6, 0.5, "Лоджия?", "уточнить", false, true);
 
   /* Виды */
   const views = {
     over: { pos: [5.1, 7.2, 9.9], tgt: [5.1, 0, 3.6], fov: 40, cut: true },
     plan: { pos: [5.1, 17, 3.62], tgt: [5.1, 0, 3.6], fov: 40, cut: true, plan: true },
-    bed: { pos: [3.05, 1.65, 0.42], tgt: [0.9, 0.85, 2.5], fov: 65, cut: false },
+    bed: { pos: [2.78, 1.53, 4.35], tgt: [1.57, 1.05, 1.37], fov: 64, cut: false },
+    bedPlan: { pos: [1.665, 10, 2.215], tgt: [1.665, 0, 2.20], fov: 24, cut: true },
+    storage: { pos: [3.05, 1.65, 0.42], tgt: [0.9, 0.85, 2.5], fov: 65, cut: false },
     live: { pos: [3.85, 1.6, 0.35], tgt: [6.2, 0.7, 4.3], fov: 62, cut: false },
     work: { pos: [4.65, 1.55, 1.95], tgt: [6.5, 0.9, 1.05], fov: 62, cut: false },
-    kit: { pos: [7.35, 1.6, 4.5], tgt: [9.7, 0.9, 1.9], fov: 62, cut: false },
-    hall: { pos: [5.4, 3.4, 3.7], tgt: [6.9, 0.5, 6.4], fov: 55, cut: true }
+    kit: { pos: [7.58, 1.52, 4.68], tgt: [9.45, 1.12, 2.68], fov: 75, cut: false },
+    cabinets: { pos: [7.11, 1.27, 3.64], tgt: [10.1, 1.15, 2.97], fov: 73, cut: false },
+    dining: { pos: [9.30, 1.53, 1.65], tgt: [7.32, 1.0, 3.35], fov: 72, cut: false },
+    hall: { pos: [5.98, 1.52, 5.47], tgt: [7.59, 1.26, 6.70], fov: 75, cut: false },
+    entry: { pos: [7.90, 1.52, 5.12], tgt: [5.77, 1.26, 6.88], fov: 75, cut: false },
+    corridor: { pos: [6.47, 1.54, 6.12], tgt: [2.25, 1.28, 6.20], fov: 69, cut: false },
+    wc: { pos: [8.48, 1.47, 5.90], tgt: [10.01, 0.97, 5.91], fov: 79, cut: false },
+    bathLeft: { pos: [1.76, 1.54, 4.77], tgt: [1.25, .95, 6.70], fov: 78, cut: false },
+    bath: { pos: [2.10, 1.49, 5.94], tgt: [0.12, 0.94, 5.66], fov: 80, cut: false }
   };
-  let current = "over", fullWalls = false, planMode = false, anim = null;
+  let current = null, fullWalls = false, planMode = false, anim = null;
   const wallBtn = document.getElementById("t-walls");
-  function setWalls(full) { fullWalls = full; applyCut(full ? H : CUT); wallBtn.setAttribute("aria-pressed", String(full)); }
-  function fitPlanDistance() {
-    const w = 11.3, d = 7.9, vf = THREE.MathUtils.degToRad(camera.fov) / 2;
+  function setWalls(full) {
+    fullWalls = full; applyCut(full ? H : CUT);
+    wcDoor.visible = full && (current === "hall" || current === "entry");
+    wallBtn.setAttribute("aria-pressed", String(full));
+  }
+  function fitPlanDistance(fov) {
+    const w = 11.3, d = 7.9, vf = THREE.MathUtils.degToRad(fov) / 2;
     return Math.max(d / 2 / Math.tan(vf), w / 2 / (Math.tan(vf) * camera.aspect)) * 1.08;
   }
   function go(name) {
+    const instant = current === null || reduce;
     const v = views[name]; current = name; planMode = !!v.plan;
     const fov = camera.aspect < 1 && !v.cut ? 90 : v.fov;
     document.querySelectorAll(".toolbar .btn[data-view]").forEach(b => b.setAttribute("aria-pressed", String(b.dataset.view === name)));
     setWalls(!v.cut);
     const pos = new THREE.Vector3(...v.pos), tgt = new THREE.Vector3(...v.tgt);
-    if (v.plan) pos.y = fitPlanDistance();
-    if (name === "over") { const k = Math.max(1, 1.25 / camera.aspect); pos.sub(tgt).multiplyScalar(k).add(tgt); }
+    if (v.plan) pos.y = CUT + fitPlanDistance(fov);
+    if (name === "bedPlan") pos.y = H + Math.max(bedroomLeft, bedroomWidth / camera.aspect) * 0.56 / Math.tan(THREE.MathUtils.degToRad(v.fov / 2));
+    if (name === "over") {
+      // При наклонном обзоре передние стены ближе к камере, чем центр плана.
+      pos.sub(tgt).setLength(fitPlanDistance(fov) + 3.6).add(tgt);
+    }
     controls.minPolarAngle = 0;
+    if (instant) { camera.position.copy(pos); controls.target.copy(tgt); camera.fov = fov; camera.updateProjectionMatrix(); return; }
     const from = { p: camera.position.clone(), t: controls.target.clone(), f: camera.fov };
-    if (reduce) { camera.position.copy(pos); controls.target.copy(tgt); camera.fov = fov; camera.updateProjectionMatrix(); return; }
     anim = { t0: performance.now(), dur: 750, from, to: { p: pos, t: tgt, f: fov } };
   }
   document.querySelectorAll("[data-view]").forEach(b => b.addEventListener("click", () => {
@@ -741,9 +985,9 @@ renderShop();
     renderer.setSize(w, h, false); camera.aspect = w / h; camera.updateProjectionMatrix();
   }
   new ResizeObserver(resize).observe(stage); resize();
-  const v0 = views.over; camera.position.set(...v0.pos); controls.target.set(...v0.tgt);
-  { const k = Math.max(1, 1.25 / camera.aspect); camera.position.sub(controls.target).multiplyScalar(k).add(controls.target); }
-  setWalls(false);
+  const start = new URLSearchParams(location.search).get("view");
+  if (Object.prototype.hasOwnProperty.call(views, start)) document.querySelector('[data-view="' + start + '"]').click();
+  else go("over");
 
   const tmp = new THREE.Vector3();
   const ease = t => t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
@@ -756,12 +1000,13 @@ renderShop();
       if (k === 1) anim = null;
     }
     controls.update();
+    for (const ceiling of ceilings) ceiling.visible = fullWalls && camera.position.y < H;
     renderer.render(scene, camera);
     const w = stage.clientWidth, h = stage.clientHeight;
     const interior = camera.position.y < 2.2;
     labels.forEach(l => {
       tmp.copy(l.p).project(camera);
-      const show = !interior && tmp.z < 1 && Math.abs(tmp.x) < 1.05 && Math.abs(tmp.y) < 1.05 && (!l.planOnly || planMode);
+      const show = !interior && tmp.z < 1 && Math.abs(tmp.x) < 1.05 && Math.abs(tmp.y) < 1.05 && (current !== "bedPlan") && (!l.planOnly || planMode);
       l.el.hidden = !show;
       if (show) { l.el.style.left = ((tmp.x + 1) / 2 * w) + "px"; l.el.style.top = ((1 - tmp.y) / 2 * h) + "px"; }
     });
